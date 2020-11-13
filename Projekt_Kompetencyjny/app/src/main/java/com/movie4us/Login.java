@@ -30,11 +30,6 @@ public class Login extends AppCompatActivity {
         textViewSignUp = findViewById(R.id.signUpText);
 
 
-
-
-
-
-
         textViewSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
