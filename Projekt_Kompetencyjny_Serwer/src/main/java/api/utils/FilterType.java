@@ -1,5 +1,9 @@
 package api.utils;
 
 public enum FilterType {
-    LANGUAGE, GENRE, SORT, YEAR;
+  LANGUAGE,
+  GENRE,
+  SORT,
+  YEAR,
+  PAGE
 }
