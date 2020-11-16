@@ -7,6 +7,8 @@ import exceptions.APIException;
 import java.time.Year;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class APIUrlBuilder {
   private static final String API_KEY = "f315a3238066ebb41551a49a0984e185";
@@ -74,7 +76,17 @@ public class APIUrlBuilder {
           } else {
             for (Map.Entry<Integer, String> entry : GENRES_MAP.entrySet()) {
               if (value.compareToIgnoreCase(entry.getValue()) == 0) {
-                retUrl = retUrl + "&with_genres=" + entry.getKey();
+                if (retUrl.contains("with_genres")) {
+                  Pattern pattern = Pattern.compile("&with_genres=(.+?)(&|\\Z)");
+                  Matcher matcher = pattern.matcher(retUrl);
+                  matcher.find();
+                  retUrl =
+                      retUrl.replaceFirst(
+                          "&with_genres=(.+?)(&|\\Z)",
+                          "&with_genres=" + matcher.group(1) + "," + entry.getKey());
+                } else {
+                  retUrl = retUrl + "&with_genres=" + entry.getKey();
+                }
                 break;
               }
             }
