@@ -112,6 +112,23 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+
+        buttonCategories.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                executorService.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        message.setAction("category");
+                        message.setSelectedCategory(spinnerCategories.getSelectedItem().toString());
+                        out.write(gson.toJson(message) + "\n" );
+                        out.flush();
+                    }
+                });
+            }
+        });
+
+
     }
 
 

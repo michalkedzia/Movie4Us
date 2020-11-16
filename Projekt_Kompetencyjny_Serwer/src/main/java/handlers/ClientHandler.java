@@ -7,8 +7,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.List;
 import java.util.Queue;
+import java.util.Vector;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import log.*;
 
@@ -19,15 +22,25 @@ public class ClientHandler implements Runnable {
     private PrintWriter out;
     private BufferedReader in;
     private BlockingQueue<Message> messageQueue;
-    // dodaj liste
+    private Vector<Message> commonList;
     private String username;
     private String connectedUser;
+
+
 
     public ClientHandler(Socket socket, PrintWriter out, BufferedReader in, BlockingQueue<Message> messageQueue) {
         this.socket = socket;
         this.out = out;
         this.in = in;
         this.messageQueue = messageQueue;
+    }
+
+    public Vector<Message> getCommonList() {
+        return commonList;
+    }
+
+    public void setCommonList(Vector<Message> commonList) {
+        this.commonList = commonList;
     }
 
     public Socket getSocket() {

@@ -4,6 +4,7 @@ public class Message {
     private String username;
     private String connectedUser;
     private String action;
+    private String selectedCategory;
 
     public String getUsername() {
         return username;
@@ -16,6 +17,14 @@ public class Message {
                 ", connectedUser='" + connectedUser + '\'' +
                 ", action='" + action + '\'' +
                 '}';
+    }
+
+    public String getSelectedCategory() {
+        return selectedCategory;
+    }
+
+    public void setSelectedCategory(String selectedCategory) {
+        this.selectedCategory = selectedCategory;
     }
 
     public void setUsername(String username) {
