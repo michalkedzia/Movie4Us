@@ -3,7 +3,7 @@ package api.data;
 public class MovieData {
   public double popularity;
   public int vote_count;
-  private String poster_path;
+  public String poster_path;
   public int id;
   public String title;
   public float vote_average;
