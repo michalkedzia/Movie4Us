@@ -57,11 +57,10 @@ public class MainActivity extends AppCompatActivity {
         textInputUsernameToConnect = findViewById(R.id.usernameToConnect);
         buttonConnect = findViewById(R.id.buttonConnect);
         spinnerCategories = findViewById(R.id.spinnerCategories);
-        buttonCategories =  findViewById(R.id.buttonCategories);
+        buttonCategories = findViewById(R.id.buttonCategories);
 
         gson = new Gson();
-        message =  new Message();
-
+        message = new Message();
 
 
         toolbar = findViewById(R.id.myToolBar);
@@ -80,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
 
                 message.setAction("login");
                 message.setUsername(username);
-                out.write(gson.toJson(message)+ "\n");
+                out.write(gson.toJson(message) + "\n");
                 out.flush();
 
                 while (true) {
@@ -104,25 +103,13 @@ public class MainActivity extends AppCompatActivity {
                     public void run() {
                         message.setAction("connect");
                         message.setConnectedUser(String.valueOf(textInputUsernameToConnect.getText()));
-                        out.write(gson.toJson(message)+ "\n");
+                        out.write(gson.toJson(message) + "\n");
                         out.flush();
                         runOnUiThread(() -> buttonConnect.setVisibility(View.GONE));
                     }
                 });
             }
         });
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     }
