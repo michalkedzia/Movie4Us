@@ -19,6 +19,7 @@ import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
+import data.MovieData;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -26,6 +27,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.nio.channels.GatheringByteChannel;
+import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -82,9 +84,56 @@ public class MainActivity extends AppCompatActivity {
                 out.write(gson.toJson(message) + "\n");
                 out.flush();
 
+
+
+
+
+                executorService.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        Scanner scanner = new Scanner(System.in);
+
+                        while (true) {
+                            String s1 = scanner.nextLine();
+                            System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+                            Message selectedMovie = new Message();
+                            selectedMovie.setUsername(username);
+                            selectedMovie.setAction("selectedMovie");
+                            selectedMovie.setMovieId(Integer.parseInt(s1));
+                            out.write(gson.toJson(selectedMovie) + "\n");
+                            out.flush();
+                        }
+                    }
+                });
+
+
+
                 while (true) {
                     try {
                         String s = in.readLine();
+                        message = gson.fromJson(s, Message.class);
+
+                        switch (message.getAction()) {
+                            case "connect": {
+                                System.out.println(message.toString());
+                                break;
+                            }
+                            case "category": {
+                                int i = 0;
+                                for (MovieData movieData : message.getMovies().movieDataArray) {
+                                    System.out.println(i);
+                                    i++;
+                                    movieData.toString();
+                                }
+                                break;
+                            }
+                            case "match":{
+                                System.out.println("***************** MATCH !!!!!!!!!!!!!!!!!!!!!");
+                                break;
+                            }
+                        }
+
+
                         System.out.println(s);
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -103,6 +152,7 @@ public class MainActivity extends AppCompatActivity {
                     public void run() {
                         message.setAction("connect");
                         message.setConnectedUser(String.valueOf(textInputUsernameToConnect.getText()));
+                        message.setUsername(username);
                         out.write(gson.toJson(message) + "\n");
                         out.flush();
                         runOnUiThread(() -> buttonConnect.setVisibility(View.GONE));
@@ -112,7 +162,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
         buttonCategories.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -120,8 +169,9 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         message.setAction("category");
+                        message.setUsername(username);
                         message.setSelectedCategory(spinnerCategories.getSelectedItem().toString());
-                        out.write(gson.toJson(message) + "\n" );
+                        out.write(gson.toJson(message) + "\n");
                         out.flush();
                     }
                 });

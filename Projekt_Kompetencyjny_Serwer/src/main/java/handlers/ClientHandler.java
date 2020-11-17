@@ -1,5 +1,6 @@
 package handlers;
 
+import api.data.PageMovieData;
 import com.google.gson.Gson;
 
 import javax.swing.*;
@@ -25,8 +26,6 @@ public class ClientHandler implements Runnable {
     private Vector<Message> commonList;
     private String username;
     private String connectedUser;
-
-
 
     public ClientHandler(Socket socket, PrintWriter out, BufferedReader in, BlockingQueue<Message> messageQueue) {
         this.socket = socket;

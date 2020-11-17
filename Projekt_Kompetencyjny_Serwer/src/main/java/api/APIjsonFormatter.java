@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class APIjsonFormatter {
   PageMovieData pageMovieData;
 
-  PageMovieData parseToObject(JsonObject rootObj) throws APIException.WrongJsonObjectException {
+ public PageMovieData parseToObject(JsonObject rootObj) throws APIException.WrongJsonObjectException {
     if (!rootObj.has("results")) {
       throw new APIException.WrongJsonObjectException("Wrong json object passed");
     }

@@ -1,13 +1,25 @@
 package model;
 
+import api.data.PageMovieData;
+
 public class Message {
     private String username;
     private String connectedUser;
     private String action;
     private String selectedCategory;
+    private PageMovieData movies;
+    private int movieId;
 
     public String getUsername() {
         return username;
+    }
+
+    public int getMovieId() {
+        return movieId;
+    }
+
+    public void setMovieId(int movieId) {
+        this.movieId = movieId;
     }
 
     @Override
@@ -16,11 +28,21 @@ public class Message {
                 "username='" + username + '\'' +
                 ", connectedUser='" + connectedUser + '\'' +
                 ", action='" + action + '\'' +
+                ", selectedCategory='" + selectedCategory + '\'' +
+                ", movies=" + movies +
                 '}';
     }
 
     public String getSelectedCategory() {
         return selectedCategory;
+    }
+
+    public PageMovieData getMovies() {
+        return movies;
+    }
+
+    public void setMovies(PageMovieData movies) {
+        this.movies = movies;
     }
 
     public void setSelectedCategory(String selectedCategory) {
