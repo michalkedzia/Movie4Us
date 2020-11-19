@@ -113,10 +113,10 @@ public class MessageQueueHandler implements Runnable {
     message.setAction("connect");
     Gson gson = new Gson();
 
-    clientHandlerFrom.getOut().write( gson.toJson(message)+ "\n");
+    clientHandlerFrom.getOut().write(gson.toJson(message) + "\n");
     clientHandlerFrom.getOut().flush();
 
-    clientHandlerTo.getOut().write(gson.toJson(message)+ "\n");
+    clientHandlerTo.getOut().write(gson.toJson(message) + "\n");
     clientHandlerTo.getOut().flush();
 
     Vector<Message> list = new Vector<>();
@@ -124,11 +124,15 @@ public class MessageQueueHandler implements Runnable {
     clientHandlerTo.setCommonList(list);
   }
 
-  void moviematcher(Message message){
+  void moviematcher(Message message) {
     ClientHandler clientHandler = clientsMap.get(message.getUsername());
     String connectedUser = clientHandler.getConnectedUser();
 
-    if(clientHandler.getCommonList().stream().anyMatch(m->(m.getAction().equals("selectedMovie") && m.getMovieId()==message.getMovieId()))){
+    if (clientHandler.getCommonList().stream()
+        .anyMatch(
+            m ->
+                (m.getAction().equals("selectedMovie")
+                    && m.getMovieId() == message.getMovieId()))) {
       Message match = new Message();
       match.setAction("match");
       Gson gson = new Gson();
@@ -141,13 +145,8 @@ public class MessageQueueHandler implements Runnable {
       clientHandler.getOut().write(gson.toJson(match) + "\n");
       clientHandler.getOut().flush();
 
-
-    }else {
+    } else {
       clientHandler.getCommonList().add(message);
     }
-
-
   }
-
-
 }

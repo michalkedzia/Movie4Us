@@ -13,7 +13,7 @@
             android:layout_width="410dp"
             android:layout_height="130dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/include">
+            app:layout_constraintTop_toBottomOf="@+id/include" android:id="@+id/constraintLayout">
 
         <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="300dp"
@@ -43,9 +43,28 @@
                 android:text="Button"
                 android:layout_width="108dp"
                 android:layout_height="51dp" android:id="@+id/buttonCategories"
-                android:layout_marginLeft="170dp" android:layout_marginStart="170dp"
-                app:layout_constraintStart_toEndOf="@+id/spinnerCategories" android:layout_marginTop="10dp"
+                android:layout_marginLeft="124dp" android:layout_marginStart="124dp"
+                app:layout_constraintStart_toEndOf="@+id/spinnerCategories" android:layout_marginTop="12dp"
                 app:layout_constraintTop_toBottomOf="@+id/buttonConnect"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
+    <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="409dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="72dp" app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
+            android:id="@+id/textInputGenres" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginLeft="1dp" android:layout_marginStart="1dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="hint" android:id="@+id/genre"/>
+    </com.google.android.material.textfield.TextInputLayout>
+    <Button
+            android:text="Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/buttonGenre"
+            android:layout_marginTop="76dp"
+            app:layout_constraintTop_toBottomOf="@+id/textInputGenres" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginLeft="130dp" android:layout_marginStart="130dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

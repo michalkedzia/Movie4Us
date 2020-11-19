@@ -1,5 +1,3 @@
-import api.data.MovieData;
-import api.data.PageMovieData;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
@@ -8,14 +6,11 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.*;
 import java.util.concurrent.*;
 
 import model.*;
 import handlers.*;
 import log.*;
-
-import javax.swing.*;
 
 public class MainServer {
   public static void main(String[] args) throws IOException {
@@ -49,10 +44,6 @@ public class MainServer {
       } else {
         MyLOG.myLOG("login error " + socket);
       }
-
-
-
     }
-
   }
 }
