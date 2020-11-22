@@ -1,6 +1,8 @@
 package api;
 
+import api.data.PageMovieData;
 import api.utils.CallType;
+import api.utils.FilterType;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import exceptions.APIException;
@@ -54,43 +56,43 @@ public class APICaller {
   // ----------------------Example use of the url builder, API caller and JSON formatter
   // ----------------------------
 
-  //    public static void main(String[] args) {
-  //      APIUrlBuilder apiUrlBuilder = new APIUrlBuilder();
-  //      String stringUrl = apiUrlBuilder.createBasicUrl(DISCOVER);
-  //      try {
-  //        apiUrlBuilder.addDiscoverFilter(FilterType.LANGUAGE, "english");
-  //        apiUrlBuilder.addDiscoverFilter(FilterType.SORT, "popularity.desc");
-  //        apiUrlBuilder.addDiscoverFilter(FilterType.PAGE, "1");
-  //        stringUrl = apiUrlBuilder.addDiscoverFilter(FilterType.GENRE, "Drama");
-  //        System.out.println(stringUrl);
-  //        stringUrl = apiUrlBuilder.addDiscoverFilter(FilterType.GENRE, "Action");
-  //        System.out.println(stringUrl);
-  //        stringUrl = apiUrlBuilder.addDiscoverFilter(FilterType.YEAR, "2019");
-  //        System.out.println(stringUrl);
-  //      } catch (APIException.WrongCallTypeException | APIException.InvalidFilterValueException e)
-  // {
-  //        e.printStackTrace();
-  //      }
-  //
-  //      APICaller apiCaller = null;
-  //      try {
-  //        apiCaller = new APICaller(stringUrl, DISCOVER);
-  //      } catch (APIException.WrongCallTypeException e) {
-  //        e.printStackTrace();
-  //      }
-  //
-  //      assert apiCaller != null;
-  //      JsonObject obj = apiCaller.sendAPIrequest();
-  //
-  //      APIjsonFormatter formatter = new APIjsonFormatter();
-  //      try {
-  //        PageMovieData page = formatter.parseToObject(obj);
-  //        System.out.println(page.toString());
-  //        System.out.println(page.movieDataArray.get(19).toString());
-  //      } catch (APIException.WrongJsonObjectException e) {
-  //        e.printStackTrace();
-  //      }
-  //    }
+//      public static void main(String[] args) {
+//        APIUrlBuilder apiUrlBuilder = new APIUrlBuilder();
+//        String stringUrl = apiUrlBuilder.createBasicUrl(DISCOVER);
+//        try {
+//          apiUrlBuilder.addDiscoverFilter(FilterType.LANGUAGE, "english");
+//          apiUrlBuilder.addDiscoverFilter(FilterType.SORT, "popularity.desc");
+//          apiUrlBuilder.addDiscoverFilter(FilterType.PAGE, "1");
+//          stringUrl = apiUrlBuilder.addDiscoverFilter(FilterType.GENRE, "Drama");
+//          System.out.println(stringUrl);
+//          stringUrl = apiUrlBuilder.addDiscoverFilter(FilterType.GENRE, "Action");
+//          System.out.println(stringUrl);
+//          stringUrl = apiUrlBuilder.addDiscoverFilter(FilterType.YEAR, "2019");
+//          System.out.println(stringUrl);
+//        } catch (APIException.WrongCallTypeException | APIException.InvalidFilterValueException e)
+//   {
+//          e.printStackTrace();
+//        }
+//
+//        APICaller apiCaller = null;
+//        try {
+//          apiCaller = new APICaller(stringUrl, DISCOVER);
+//        } catch (APIException.WrongCallTypeException e) {
+//          e.printStackTrace();
+//        }
+//
+//        assert apiCaller != null;
+//        JsonObject obj = apiCaller.sendAPIrequest();
+//
+//        APIjsonFormatter formatter = new APIjsonFormatter();
+//        try {
+//          PageMovieData page = formatter.parseToObject(obj);
+//          System.out.println(page.toString());
+//          System.out.println(page.movieDataArray.get(19).toString());
+//        } catch (APIException.WrongJsonObjectException e) {
+//          e.printStackTrace();
+//        }
+//      }
 
   public String getCallUrl() {
     return callUrl;
