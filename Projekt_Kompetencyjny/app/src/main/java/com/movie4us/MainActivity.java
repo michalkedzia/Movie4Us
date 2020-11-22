@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
     executorService.execute(
         () -> {
           try {
-            socket = new Socket("169.254.250.43", 5000);
+            socket = new Socket("192.168.56.1", 5000);
             out = new PrintWriter(socket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
           } catch (Exception e) {

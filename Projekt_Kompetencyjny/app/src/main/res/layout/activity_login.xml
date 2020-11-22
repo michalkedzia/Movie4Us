@@ -4,31 +4,31 @@
                                                    xmlns:tools="http://schemas.android.com/tools"
                                                    android:layout_width="match_parent"
                                                    android:layout_height="match_parent"
-                                                   tools:context=".Login">
+                                                   tools:context=".Login" android:background="#d9e7ff">
 
     <TextView
-            android:id="@+id/textView"
+            android:id="@+id/Movie4Us"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="72dp"
             android:fontFamily="@font/poppinsbold"
             android:gravity="center"
-            android:text="@string/login"
-            android:textColor="@color/colorAccent"
-            android:textSize="30sp"
+            android:text="@string/Movie4Us"
+            android:textColor="#2e74ff"
+            android:textSize="36sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:targetApi="jelly_bean"/>
-
+            tools:targetApi="jelly_bean" android:background="#00F6F5F5" app:drawableTint="#05DF2626"
+            android:textStyle="italic"/>
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.426"
-            tools:layout_editor_absoluteX="0dp">
+            app:layout_constraintVertical_bias="0.799"
+            tools:layout_editor_absoluteX="-16dp">
 
         <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayoutUsername"
@@ -36,7 +36,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
-                android:hint="@string/username"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -48,7 +47,7 @@
                     android:layout_height="wrap_content"
                     android:drawableEnd="@drawable/ic_user"
                     android:drawableRight="@drawable/ic_user"
-                    android:text="Login"
+                    android:hint="Login"
                     android:fontFamily="@font/poppinsmedium"
                     tools:targetApi="jelly_bean"/>
         </com.google.android.material.textfield.TextInputLayout>
@@ -85,17 +84,20 @@
 
         <Button
                 android:id="@+id/buttonLogin"
-                style="@style/Widget.AppCompat.Button.Colored"
+                android:background="#c3d3e4"
+                android:textColor="#2e74ff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text="@string/login"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/progress"/>
+                app:layout_constraintTop_toBottomOf="@+id/progress" android:textStyle="normal|bold"
+                android:textSize="15sp"/>
 
         <TextView
                 android:id="@+id/signUpText"
+                android:textColor="#2e74ff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
@@ -106,5 +108,13 @@
                 app:layout_constraintTop_toBottomOf="@+id/buttonLogin"
                 tools:targetApi="jelly_bean"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
+    <ImageView
+            android:layout_width="192dp"
+            android:layout_height="143dp" app:srcCompat="@drawable/logo" android:id="@+id/logo"
+            android:layout_marginEnd="110dp" android:layout_marginRight="110dp"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toBottomOf="@+id/Movie4Us"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="109dp"
+            android:layout_marginStart="109dp"
+    />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
