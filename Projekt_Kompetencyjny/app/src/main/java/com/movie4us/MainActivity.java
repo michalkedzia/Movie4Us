@@ -22,33 +22,34 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.InetAddress;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity {
 
-  private ExecutorService executorService;
-  public String username;
+//  private ExecutorService executorService;
+//  public String username;
   private Toolbar toolbar;
-  private Socket socket = null;
-  private BufferedReader in;
-  private PrintWriter out;
+//  private Socket socket = null;
+//  private BufferedReader in;
+//  private PrintWriter out;
   private Button buttonConnect;
   private TextInputEditText textInputUsernameToConnect;
   private Spinner spinnerCategories;
   private Button buttonCategories;
-
+  private Connection connection;
   private Message message;
   private Gson gson;
+
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-    Intent intent = getIntent();
 
-    username = intent.getStringExtra(Login.LOGIN);
     textInputUsernameToConnect = findViewById(R.id.usernameToConnect);
     buttonConnect = findViewById(R.id.buttonConnect);
     spinnerCategories = findViewById(R.id.spinnerCategories);
@@ -57,110 +58,80 @@ public class MainActivity extends AppCompatActivity {
     gson = new Gson();
     message = new Message();
 
+    connection = Connection.getConnection();
+
     toolbar = findViewById(R.id.myToolBar);
     setSupportActionBar(toolbar);
-    executorService = Executors.newFixedThreadPool(10);
-
-    executorService.execute(
-        () -> {
-          try {
-            socket = new Socket("192.168.56.1", 5000);
-            out = new PrintWriter(socket.getOutputStream(), true);
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-          } catch (Exception e) {
-            e.printStackTrace();
-          }
-
-          message.setAction("login");
-          message.setUsername(username);
-          out.write(gson.toJson(message) + "\n");
-          out.flush();
 
 
 
-          // TODO Stworzone tylko na potrzby testów ; do usunecia
-          TextInputEditText textInputGenres = findViewById(R.id.genre);
-          Button buttonGenre = findViewById(R.id.buttonGenre);
-          buttonGenre.setOnClickListener(
-              new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                  //                        executorService.execute(new Runnable() {
-                  //                            @Override
-                  //                            public void run() {
-                  //                                Message selectedMovie = new Message();
-                  //                                selectedMovie.setUsername(username);
-                  //                                selectedMovie.setAction("selectedMovie");
-                  //
-                  // selectedMovie.setMovieId(Integer.parseInt(String.valueOf(textInputGenres.getText())));
-                  //                                out.write(gson.toJson(selectedMovie) + "\n");
-                  //                                out.flush();
-                  //                            }
-                  //                        });
-
-                  Intent intent1 = new Intent(getApplicationContext(), MovieListActivity.class);
-                  startActivity(intent1);
-                }
-              });
-          //
+    System.out.println("on create main");
 
 
-          while (true) {
-            try {
-              String s = in.readLine();
-              message = gson.fromJson(s, Message.class);
 
-              switch (message.getAction()) {
-                case "connect":
-                  {
-                    System.out.println(message.toString());
-                    break;
-                  }
-                case "category":
-                  {
-                    int i = 0;
-                    for (MovieData movieData : message.getMovies().movieDataArray) {
-                      System.out.println(i);
-                      i++;
-                      movieData.toString();
-                    }
-                    break;
-                  }
-                case "match":
-                  {
-                    System.out.println("***************** MATCH !!!!!!!!!!!!!!!!!!!!!");
-                    break;
-                  }
-              }
-
-              System.out.println(s);
-            } catch (IOException e) {
-              e.printStackTrace();
-            }
-          }
-        });
+//    connection.getExecutorService().execute(
+//        () -> {
+//
+//
+//          while (true) {
+//            try {
+//              String s = connection.getIn().readLine();
+//              message = gson.fromJson(s, Message.class);
+//
+//              switch (message.getAction()) {
+//                case "connect":
+//                  {
+//                    System.out.println(message.toString());
+//                    break;
+//                  }
+//                case "category":
+//                  {
+//                    int i = 0;
+//                    for (MovieData movieData : message.getMovies().movieDataArray) {
+//                      System.out.println(i);
+//                      i++;
+//                      movieData.toString();
+//                    }
+//                    break;
+//                  }
+//                case "match":
+//                  {
+//                    System.out.println("***************** MATCH !!!!!!!!!!!!!!!!!!!!!");
+//                    break;
+//                  }
+//              }
+//
+//              System.out.println(s);
+//            } catch (IOException e) {
+//              e.printStackTrace();
+//            }
+//          }
+//        });
 
     buttonConnect.setOnClickListener(
         v ->
-            executorService.execute(
+            connection.getExecutorService().execute(
                 () -> {
-                  message.setAction("connect");
-                  message.setConnectedUser(String.valueOf(textInputUsernameToConnect.getText()));
-                  message.setUsername(username);
-                  out.write(gson.toJson(message) + "\n");
-                  out.flush();
-                  runOnUiThread(() -> buttonConnect.setVisibility(View.GONE));
+                  Intent intent1 = new Intent(getApplicationContext(), MovieListActivity.class);
+                  startActivity(intent1);
+                  System.out.println("------------ Main");
+//                  message.setAction("connect");
+//                  message.setConnectedUser(String.valueOf(textInputUsernameToConnect.getText()));
+//                  message.setUsername(connection.getUsername());
+//                  connection.getOut().write(gson.toJson(message) + "\n");
+//                  connection.getOut().flush();
+////                  runOnUiThread(() -> buttonConnect.setVisibility(View.GONE)); // ukruwanie button
                 }));
 
     buttonCategories.setOnClickListener(
         v ->
-            executorService.execute(
+                connection.getExecutorService().execute(
                 () -> {
                   message.setAction("category");
-                  message.setUsername(username);
+                  message.setUsername(connection.getUsername());
                   message.setSelectedCategory(spinnerCategories.getSelectedItem().toString());
-                  out.write(gson.toJson(message) + "\n");
-                  out.flush();
+                  connection.getOut().write(gson.toJson(message) + "\n");
+                  connection.getOut().flush();
                 }));
   }
 
@@ -181,4 +152,12 @@ public class MainActivity extends AppCompatActivity {
     inflater.inflate(R.menu.menu, menu);
     return true;
   }
+
+
+
+    @Override
+    protected void onDestroy() {
+        System.out.println("Destroy main");
+        super.onDestroy();
+    }
 }
