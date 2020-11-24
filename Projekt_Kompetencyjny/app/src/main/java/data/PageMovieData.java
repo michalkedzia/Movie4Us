@@ -22,4 +22,8 @@ public class PageMovieData {
         + results_on_page
         + '}';
   }
+
+  public ArrayList<MovieData> getMovieDataArray() {
+    return movieDataArray;
+  }
 }
