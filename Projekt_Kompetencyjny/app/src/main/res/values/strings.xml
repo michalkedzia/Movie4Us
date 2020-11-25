@@ -16,12 +16,27 @@
     <string name="signup">SignUp</string>
     <string name="fullname">fullname</string>
     <string name="email">email</string>
-    
+
+
     <string-array name="categoriesList">
-        <item>Kategoria1</item>
-        <item>Kategoria2</item>
-        <item>Kategoria3</item>
-        <item>Kategoria5</item>
-        <item>Kategoria6</item>
+        <item>War</item>
+        <item>Music</item>
+        <item>Comedy</item>
+        <item>Documentary</item>
+        <item>History</item>
+        <item>Western</item>
+        <item>Adventure</item>
+        <item>Fantasy</item>
+        <item>Science Fiction</item>
+        <item>Animation</item>
+        <item>Crime</item>
+        <item>Mystery</item>
+        <item>Drama</item>
+        <item>TV Movie</item>
+        <item>Thriller</item>
+        <item>Horror</item>
+        <item>Action</item>
+        <item>Romance</item>
+        <item>Family</item>
     </string-array>
 </resources>

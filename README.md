@@ -1,3 +1,4 @@
-App for choosing a movie.
 
+App for choosing a movie
 Projekt Kompetencyjny
+
