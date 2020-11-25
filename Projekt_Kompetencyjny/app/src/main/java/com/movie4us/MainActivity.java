@@ -1,16 +1,18 @@
 package com.movie4us;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+
 import android.widget.Spinner;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
+
 import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
@@ -62,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
     executorService.execute(
         () -> {
           try {
-            socket = new Socket("192.168.1.103", 5000);
+            socket = new Socket("192.168.56.1", 5000);
             out = new PrintWriter(socket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
           } catch (Exception e) {
@@ -74,35 +76,34 @@ public class MainActivity extends AppCompatActivity {
           out.write(gson.toJson(message) + "\n");
           out.flush();
 
-          // TODO Stworzone tylko na potrzby testów ; do usunecia
-          //          TextInputEditText textInputGenres = findViewById(R.id.genre);
-          //          Button buttonGenre = findViewById(R.id.buttonGenre);
-          //          buttonGenre.setOnClickListener(
-          //              new View.OnClickListener() {
-          //                @Override
-          //                public void onClick(View v) {
-          //                  executorService.execute(
-          //                      new Runnable() {
-          //                        @Override
-          //                        public void run() {
-          //                          Message selectedMovie = new Message();
-          //                          selectedMovie.setUsername(username);
-          //                          selectedMovie.setAction("selectedMovie");
-          //
-          //                          selectedMovie.setMovieId(
-          //
-          // Integer.parseInt(String.valueOf(textInputGenres.getText())));
-          //                          out.write(gson.toJson(selectedMovie) + "\n");
-          //                          out.flush();
-          //                        }
-          //                      });
 
-          //                  Intent intent1 = new Intent(getApplicationContext(),
-          // MovieListActivity.class);
-          //                  startActivity(intent1);
-          //                }
-          //              });
+
+          // TODO Stworzone tylko na potrzby testów ; do usunecia
+          TextInputEditText textInputGenres = findViewById(R.id.genre);
+          Button buttonGenre = findViewById(R.id.buttonGenre);
+          buttonGenre.setOnClickListener(
+              new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                  //                        executorService.execute(new Runnable() {
+                  //                            @Override
+                  //                            public void run() {
+                  //                                Message selectedMovie = new Message();
+                  //                                selectedMovie.setUsername(username);
+                  //                                selectedMovie.setAction("selectedMovie");
+                  //
+                  // selectedMovie.setMovieId(Integer.parseInt(String.valueOf(textInputGenres.getText())));
+                  //                                out.write(gson.toJson(selectedMovie) + "\n");
+                  //                                out.flush();
+                  //                            }
+                  //                        });
+
+                  Intent intent1 = new Intent(getApplicationContext(), MovieListActivity.class);
+                  startActivity(intent1);
+                }
+              });
           //
+
 
           while (true) {
             try {
