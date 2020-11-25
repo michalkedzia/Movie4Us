@@ -9,6 +9,9 @@ import android.os.Bundle;
 import com.google.android.material.textfield.TextInputEditText;
 import com.vishnusivadas.advanced_httpurlconnection.PutData;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 public class Login extends AppCompatActivity {
     TextInputEditText textInputEditTextUsername, textInputEditTextPassword;
     Button buttonLogin;
@@ -21,7 +24,6 @@ public class Login extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
 
         textInputEditTextPassword = findViewById(R.id.password);
         textInputEditTextUsername = findViewById(R.id.username);
@@ -38,6 +40,7 @@ public class Login extends AppCompatActivity {
                 finish();
             }
         });
+
 
 
         buttonLogin.setOnClickListener(new View.OnClickListener() {
@@ -80,7 +83,9 @@ public class Login extends AppCompatActivity {
                                     if (result.equals("Login Success")) {
                                         String text = ((EditText) findViewById(R.id.username)).getText().toString();
                                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                        intent.putExtra(LOGIN, text);
+//                                        intent.putExtra(LOGIN, text);
+                                        Connection connection = Connection.getConnection();
+                                        connection.connect(text);
                                         startActivity(intent);
                                         finish();
                                     } else {
