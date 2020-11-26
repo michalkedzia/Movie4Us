@@ -8,23 +8,23 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.squareup.picasso.Picasso;
-import swipemenu.ItemModel;
+import data.MovieData;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
 
-    private List<ItemModel> items;
+    private ArrayList<MovieData> items;
 
-    public CardAdapter(List<ItemModel> items) {
+    public CardAdapter(ArrayList<MovieData> items) {
         this.items = items;
     }
 
-    public List<ItemModel> getItems() {
+    public ArrayList<MovieData> getItems() {
         return items;
     }
 
-    public void setItems(List<ItemModel> items) {
+    public void setItems(ArrayList<MovieData> items) {
         this.items = items;
     }
 
@@ -50,7 +50,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
         ImageView image;
         TextView title, description, film_rating;
 
-        ViewHolder(@NonNull View itemView){
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
             image = itemView.findViewById(R.id.item_image);
             title = itemView.findViewById(R.id.item_title);
@@ -58,11 +58,11 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
             film_rating = itemView.findViewById(R.id.item_film_rating);
         }
 
-        void setData(ItemModel itemModel) {
-            Picasso.get().load(itemModel.getImage()).into(image);
-            title.setText(itemModel.getTitle());
-            description.setText(itemModel.getDescription());
-            film_rating.setText(itemModel.getFilm_rating());
+        void setData(MovieData movieCardModel) {
+            Picasso.get().load(movieCardModel.getPoster_path()).into(image);
+            title.setText(movieCardModel.title);
+            description.setText(movieCardModel.overview);
+            film_rating.setText(Float.toString(movieCardModel.vote_average));
         }
     }
 }

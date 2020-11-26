@@ -85,11 +85,27 @@ public class MessageQueueHandler implements Runnable {
 
   private void sendMoviesToBothUsers(Message message, List<String> genres) {
 
+    // ** Dodatkowa wiadomosc od serwera do klienta- wybarnie kategorii
+    Message genresSelection =  new Message();
+    Gson gson = new Gson();
+    genresSelection.setUsername(message.getUsername());
+    genresSelection.setAction("selectedGenres");
+    ClientHandler client  = clientsMap.get(message.getUsername());
+    client.getOut().write(gson.toJson(genresSelection) + "\n");
+    client.getOut().flush();
+
+    genresSelection.setUsername(client.getConnectedUser());
+    client = clientsMap.get(client.getConnectedUser());
+    client.getOut().write(gson.toJson(genresSelection) + "\n");
+    client.getOut().flush();
+    // **
+
+
     DataMovies dataMovies = new DataMovies(genres);
     PageMovieData movies = dataMovies.getMovies();
     message.setMovies(movies);
     message.setAction("category");
-    Gson gson = new Gson();
+
 
     ClientHandler clientHandler = clientsMap.get(message.getUsername());
 
