@@ -57,6 +57,11 @@ public class LayoutActivity extends AppCompatActivity {
 
             @Override
             public void onCardAppeared(View view, int position) {
+                Log.d(TAG, "view: " + view.getContext() + " position: " + position);
+                List<ItemModel> list = adapter.getItems();
+                ItemModel model = list.get(position);
+                String title = model.getTitle();
+                Log.d(TAG, "title: " + title);
             }
 
             @Override
@@ -94,7 +99,6 @@ public class LayoutActivity extends AppCompatActivity {
         items.add(new ItemModel("https://image.tmdb.org/t/p/original/vzvKcPQ4o7TjWeGIn0aGC9FeVNu.jpg", "Title 1", "Description 1: blah blah blah sdjfowesacuqwe qweqwec", "Film rating 2 stars"));
         items.add(new ItemModel("https://image.tmdb.org/t/p/w600_and_h900_bestv2/vIZl6POj8CrKOIdfZJEFBoBfC3F.jpg", "Title 2", "Description 2: blah blah blah sdjfowesacuqwe qweqwec", "Film rating 4 stars"));
         items.add(new ItemModel("https://image.tmdb.org/t/p/w600_and_h900_bestv2/opwCl56Zi8mextLETtM3d0ryVFU.jpg", "Title 3", "Description 3: blah blah blah sdjfowesacuqwe qweqwec", "Film rating 5 stars"));
-
 
         return items;
     }
