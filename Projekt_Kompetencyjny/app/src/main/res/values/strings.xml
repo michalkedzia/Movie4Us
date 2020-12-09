@@ -16,6 +16,9 @@
     <string name="signup">SignUp</string>
     <string name="fullname">fullname</string>
     <string name="email">email</string>
+    <string name="Movie4Us">Movie4Us</string>
+    <string name="SignUp">Register</string>
+    <string name="choice">Choose category:</string>
 
 
     <string-array name="categoriesList">

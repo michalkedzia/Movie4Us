@@ -9,6 +9,8 @@ import android.os.Bundle;
 import com.google.android.material.textfield.TextInputEditText;
 import com.vishnusivadas.advanced_httpurlconnection.PutData;
 
+import java.io.IOException;
+
 public class Login extends AppCompatActivity {
     TextInputEditText textInputEditTextUsername, textInputEditTextPassword;
     Button buttonLogin;
@@ -80,7 +82,15 @@ public class Login extends AppCompatActivity {
                                     if (result.equals("Login Success")) {
                                         String text = ((EditText) findViewById(R.id.username)).getText().toString();
                                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                        intent.putExtra(LOGIN, text);
+                                        Connection connection = Connection.getConnection();
+                                        connection.setUsername(text);
+                                        try {
+                                            connection.connect();
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+
+//                                        intent.putExtra(LOGIN, text);
                                         startActivity(intent);
                                         finish();
                                     } else {

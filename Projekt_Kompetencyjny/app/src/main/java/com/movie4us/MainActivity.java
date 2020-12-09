@@ -4,51 +4,36 @@ import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
-
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
-
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
-import data.MovieData;
-
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.Optional;
 
 public class MainActivity extends AppCompatActivity {
 
-  private ExecutorService executorService;
-  public String username;
   private Toolbar toolbar;
-  private Socket socket = null;
-  private BufferedReader in;
-  private PrintWriter out;
   private Button buttonConnect;
   private TextInputEditText textInputUsernameToConnect;
   private Spinner spinnerCategories;
   private Button buttonCategories;
-
   private Message message;
   private Gson gson;
+  boolean listener;
+  private Connection connection;
+  private Runnable listenerThread;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-    Intent intent = getIntent();
-
-    username = intent.getStringExtra(Login.LOGIN);
     textInputUsernameToConnect = findViewById(R.id.usernameToConnect);
     buttonConnect = findViewById(R.id.buttonConnect);
     spinnerCategories = findViewById(R.id.spinnerCategories);
@@ -59,55 +44,44 @@ public class MainActivity extends AppCompatActivity {
 
     toolbar = findViewById(R.id.myToolBar);
     setSupportActionBar(toolbar);
-    executorService = Executors.newFixedThreadPool(10);
+    connection = Connection.getConnection();
+    listener = true;
 
-    executorService.execute(
+    Button echo;
+    echo = findViewById(R.id.echo);
+
+    echo.setOnClickListener(
+        v -> {
+          connection
+              .getExecutorService()
+              .execute(
+                  () -> {
+                    System.out.println("send echo !!1");
+                    Message m = new Message();
+                    Gson gson = new Gson();
+                    m.setAction("echo");
+                    m.setUsername(connection.getUsername());
+                    connection.send(gson.toJson(m));
+                  });
+        });
+
+        TextView logout = findViewById(R.id.logout);
+        logout.setOnClickListener(v -> {
+            connection.getExecutorService().execute(() -> {
+                message.setUsername(connection.getUsername());
+                message.setAction("logout");
+                connection.send(gson.toJson(message));
+            });
+            logout();
+
+        });
+
+    listenerThread =
         () -> {
-          try {
-            socket = new Socket("169.254.250.43", 5000);
-            out = new PrintWriter(socket.getOutputStream(), true);
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-          } catch (Exception e) {
-            e.printStackTrace();
-          }
-
-          message.setAction("login");
-          message.setUsername(username);
-          out.write(gson.toJson(message) + "\n");
-          out.flush();
-
-
-
-          // TODO Stworzone tylko na potrzby testów ; do usunecia
-          TextInputEditText textInputGenres = findViewById(R.id.genre);
-          Button buttonGenre = findViewById(R.id.buttonGenre);
-          buttonGenre.setOnClickListener(
-              new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                  //                        executorService.execute(new Runnable() {
-                  //                            @Override
-                  //                            public void run() {
-                  //                                Message selectedMovie = new Message();
-                  //                                selectedMovie.setUsername(username);
-                  //                                selectedMovie.setAction("selectedMovie");
-                  //
-                  // selectedMovie.setMovieId(Integer.parseInt(String.valueOf(textInputGenres.getText())));
-                  //                                out.write(gson.toJson(selectedMovie) + "\n");
-                  //                                out.flush();
-                  //                            }
-                  //                        });
-
-                  Intent intent1 = new Intent(getApplicationContext(), MovieListActivity.class);
-                  startActivity(intent1);
-                }
-              });
-          //
-
-
-          while (true) {
+          System.out.println("listenerThread  start !!!!!");
+          while (listener) {
             try {
-              String s = in.readLine();
+              String s = connection.getIn().readLine();
               message = gson.fromJson(s, Message.class);
 
               switch (message.getAction()) {
@@ -116,14 +90,12 @@ public class MainActivity extends AppCompatActivity {
                     System.out.println(message.toString());
                     break;
                   }
-                case "category":
+                case "selectedGenres":
                   {
-                    int i = 0;
-                    for (MovieData movieData : message.getMovies().movieDataArray) {
-                      System.out.println(i);
-                      i++;
-                      movieData.toString();
-                    }
+                    listener = false;
+                    Intent intent = new Intent(getApplicationContext(), CardSwipeActivity.class);
+                    startActivity(intent);
+                    System.out.println("koniec watku");
                     break;
                   }
                 case "match":
@@ -131,37 +103,54 @@ public class MainActivity extends AppCompatActivity {
                     System.out.println("***************** MATCH !!!!!!!!!!!!!!!!!!!!!");
                     break;
                   }
+                case "echo":
+                  {
+                    System.out.println("->>>>>>>> " + message.getAction());
+                    break;
+                  }
+                case "logout":
+                  {
+                    listener = false;
+                    System.out.println("logout server");
+                    break;
+                  }
               }
 
               System.out.println(s);
             } catch (IOException e) {
-              e.printStackTrace();
+
+//              e.printStackTrace();
+              return ;
             }
           }
-        });
+        };
+
+    connection.getExecutorService().execute(listenerThread);
 
     buttonConnect.setOnClickListener(
         v ->
-            executorService.execute(
-                () -> {
-                  message.setAction("connect");
-                  message.setConnectedUser(String.valueOf(textInputUsernameToConnect.getText()));
-                  message.setUsername(username);
-                  out.write(gson.toJson(message) + "\n");
-                  out.flush();
-                  runOnUiThread(() -> buttonConnect.setVisibility(View.GONE));
-                }));
+            connection
+                .getExecutorService()
+                .execute(
+                    () -> {
+                      message.setAction("connect");
+                      message.setConnectedUser(
+                          String.valueOf(textInputUsernameToConnect.getText()));
+                      message.setUsername(connection.getUsername());
+                      connection.send(gson.toJson(message));
+                    }));
 
     buttonCategories.setOnClickListener(
         v ->
-            executorService.execute(
-                () -> {
-                  message.setAction("category");
-                  message.setUsername(username);
-                  message.setSelectedCategory(spinnerCategories.getSelectedItem().toString());
-                  out.write(gson.toJson(message) + "\n");
-                  out.flush();
-                }));
+            connection
+                .getExecutorService()
+                .execute(
+                    () -> {
+                      message.setAction("category");
+                      message.setUsername(connection.getUsername());
+                      message.setSelectedCategory(spinnerCategories.getSelectedItem().toString());
+                      connection.send(gson.toJson(message));
+                    }));
   }
 
   @Override
@@ -176,9 +165,36 @@ public class MainActivity extends AppCompatActivity {
   }
 
   @Override
+  protected void onRestart() {
+    super.onRestart();
+    listener = true;
+    connection.getExecutorService().execute(listenerThread);
+  }
+
+  @Override
   public boolean onCreateOptionsMenu(Menu menu) {
     MenuInflater inflater = getMenuInflater();
     inflater.inflate(R.menu.menu, menu);
     return true;
+  }
+
+  private void logout() {
+    connection.getExecutorService().shutdown();
+    connection.getExecutorService().shutdownNow();
+
+    try {
+      connection.getOut().close();
+      connection.getIn().close();
+      connection.getSocket().close();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+
+    connection.getExecutorService().shutdownNow();
+      System.out.println("logout koniec");
+    Intent intent = new Intent(getApplicationContext(), Login.class);
+    startActivity(intent);
+    finish();
   }
 }

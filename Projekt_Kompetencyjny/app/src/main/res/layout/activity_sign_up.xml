@@ -4,14 +4,15 @@
                                                    xmlns:tools="http://schemas.android.com/tools"
                                                    android:layout_width="match_parent"
                                                    android:layout_height="match_parent"
-                                                   tools:context=".SignUp">
+                                                   tools:context=".SignUp" android:background="#d9e7ff">
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.4">
+            app:layout_constraintVertical_bias="0.564" tools:layout_editor_absoluteX="0dp"
+            android:id="@+id/constraintLayout2">
 
         <TextView
                 android:id="@+id/textView"
@@ -21,12 +22,12 @@
                 android:gravity="center"
                 android:text="@string/signup"
                 android:textSize="30sp"
-                android:textColor="@color/colorAccent"
+                android:textColor="#2e74ff"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:targetApi="jelly_bean" />
+                tools:targetApi="jelly_bean"/>
 
         <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayoutFullname"
@@ -48,7 +49,7 @@
                     android:drawableEnd="@drawable/ic_name"
                     android:drawableRight="@drawable/ic_name"
                     android:fontFamily="@font/poppinsmedium"
-                    tools:targetApi="jelly_bean" />
+                    tools:targetApi="jelly_bean"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -70,7 +71,7 @@
                     android:drawableEnd="@drawable/ic_email"
                     android:drawableRight="@drawable/ic_email"
                     android:fontFamily="@font/poppinsmedium"
-                    tools:targetApi="jelly_bean" />
+                    tools:targetApi="jelly_bean"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -92,7 +93,7 @@
                     android:drawableEnd="@drawable/ic_user"
                     android:drawableRight="@drawable/ic_user"
                     android:fontFamily="@font/poppinsmedium"
-                    tools:targetApi="jelly_bean" />
+                    tools:targetApi="jelly_bean"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -113,7 +114,7 @@
                     android:inputType="textPassword"
                     android:drawableRight="@drawable/ic_pass"
                     android:fontFamily="@font/poppinsmedium"
-                    tools:targetApi="jelly_bean" />
+                    tools:targetApi="jelly_bean"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <ProgressBar
@@ -123,7 +124,7 @@
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutPassword" />
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutPassword"/>
 
         <Button
                 android:id="@+id/buttonSignUp"
@@ -131,10 +132,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-
+                android:text="@string/SignUp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/progress" />
+                app:layout_constraintTop_toBottomOf="@+id/progress" android:background="#c3d3e4"
+                android:textColor="#2e74ff"/>
 
         <TextView
                 android:id="@+id/loginText"
@@ -146,7 +148,15 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/buttonSignUp"
-                tools:targetApi="jelly_bean" />
+                tools:targetApi="jelly_bean" android:textColor="#2e74ff"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
+    <ImageView
+            android:layout_width="78dp"
+            android:layout_height="105dp" app:srcCompat="@drawable/logo" android:id="@+id/imageView"
+            android:layout_marginBottom="32dp" app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="25dp" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginLeft="166dp" android:layout_marginStart="166dp" android:layout_marginEnd="167dp"
+            android:layout_marginRight="167dp" app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

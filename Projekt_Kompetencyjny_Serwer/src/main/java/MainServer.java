@@ -4,8 +4,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Arrays;
 import java.util.concurrent.*;
 
 import model.*;
@@ -24,9 +26,8 @@ public class MainServer {
     //        List<ClientHandler> clientHandlerList = new CopyOnWriteArrayList<>();
     BlockingQueue<Message> messageQueue = new LinkedBlockingDeque<>();
     executorService.execute(new MessageQueueHandler(clientsMap, messageQueue));
-
+    System.out.println("server start");
     while (true) {
-      System.out.println("server start");
       Socket socket = serverSocket.accept();
       System.out.println(socket.toString());
       PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
