@@ -36,6 +36,28 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
         return new ViewHolder(view);
     }
 
+    //TODO: Testy teściki
+    String returnPathToImage(int position)
+    {
+        return items.get(position).getPoster_path();
+    }
+
+    String returnTitle(int position)
+    {
+        return items.get(position).title;
+    }
+
+    String returnDescription(int position)
+    {
+        return items.get(position).overview;
+    }
+
+    String returnFilmRating(int position)
+    {
+        String Rating=Float.toString(items.get(position).vote_average);
+        return Rating;
+    }
+
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.setData(items.get(position));
@@ -64,5 +86,8 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
             description.setText(movieCardModel.overview);
             film_rating.setText(Float.toString(movieCardModel.vote_average));
         }
+
+
     }
+
 }
