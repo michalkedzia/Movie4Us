@@ -13,6 +13,7 @@ import java.util.concurrent.Executors;
 public class Connection {
   private static Connection connection = null;
 
+
   private Connection() {}
 
   private String username;

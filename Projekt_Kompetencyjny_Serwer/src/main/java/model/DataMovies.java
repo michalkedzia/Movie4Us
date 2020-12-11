@@ -11,7 +11,6 @@ import exceptions.APIException;
 import java.util.List;
 
 import static api.utils.CallType.DISCOVER;
-import static api.utils.CallType.GENRES;
 
 public class DataMovies {
 
@@ -58,7 +57,7 @@ public class DataMovies {
     APIjsonFormatter formatter = new APIjsonFormatter();
     PageMovieData page = null;
     try {
-      page = formatter.parseToObject(obj);
+      page = formatter.parseToObjectPageMovieData(obj);
     } catch (APIException.WrongJsonObjectException e) {
       e.printStackTrace();
     }

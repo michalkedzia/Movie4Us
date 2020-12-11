@@ -2,5 +2,6 @@ package api.utils;
 
 public enum CallType {
   DISCOVER,
-  GENRES
+  GENRES,
+  PROVIDERS
 }

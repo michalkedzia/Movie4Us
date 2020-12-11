@@ -18,4 +18,10 @@ public class APIException {
       super(msg);
     }
   }
+
+  public static class WrongMovieIdException extends BaseException {
+    public WrongMovieIdException(String msg) {
+      super(msg);
+    }
+  }
 }
