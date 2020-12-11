@@ -7,9 +7,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Vector;
 import java.util.concurrent.BlockingQueue;
-
 import log.*;
-
 import model.*;
 
 public class ClientHandler implements Runnable {
@@ -18,8 +16,8 @@ public class ClientHandler implements Runnable {
   private BufferedReader in;
   private BlockingQueue<Message> messageQueue;
   private Vector<Message> commonList;
-  private String username;
-  private String connectedUser;
+  private String username = null;
+  private String connectedUser = null;
 
   public ClientHandler(
       Socket socket, PrintWriter out, BufferedReader in, BlockingQueue<Message> messageQueue) {
@@ -89,7 +87,7 @@ public class ClientHandler implements Runnable {
   public void run() {
     String json = null;
     Gson gson = new Gson();
-    Message message;
+    Message message ;
 
     while (true) {
       try {
@@ -100,6 +98,18 @@ public class ClientHandler implements Runnable {
       MyLOG.myLOG(json);
       message = gson.fromJson(json, Message.class);
       messageQueue.add(message);
+      if (message.getAction().equals("logout")) {
+        out.write(json + "\n");
+        out.flush();
+        try {
+          in.close();
+          out.close();
+          socket.close();
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+        return;
+      }
     }
   }
 }
