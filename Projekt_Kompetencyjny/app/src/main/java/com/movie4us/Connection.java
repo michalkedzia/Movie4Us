@@ -38,7 +38,7 @@ public class Connection {
             @Override
             public void run() {
                 try {
-                    socket = new Socket("169.254.250.43", 5000);
+                    socket = new Socket("192.168.1.101", 5000);
                     out = new PrintWriter(socket.getOutputStream(), true);
                     in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 } catch (IOException e) {
