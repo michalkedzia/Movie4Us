@@ -53,8 +53,22 @@ public class MessageQueueHandler implements Runnable {
             moviematcher(peek);
             break;
           }
+        case "echo":
+        {
+          echo(peek);
+          break;
+        }
+        case "logout":
+        {
+          logout(peek);
+          break;
+        }
+        case "matchStop":
+        {
+          echo(peek);
+          break;
+        }
       }
-
       MyLOG.myLOG(peek.toString());
     }
   }
@@ -140,9 +154,12 @@ public class MessageQueueHandler implements Runnable {
     clientHandlerTo.setCommonList(list);
   }
 
-  void moviematcher(Message message) {
+  private void moviematcher(Message message) {
+
     ClientHandler clientHandler = clientsMap.get(message.getUsername());
     String connectedUser = clientHandler.getConnectedUser();
+
+
 
     if (clientHandler.getCommonList().stream()
         .anyMatch(
@@ -163,6 +180,26 @@ public class MessageQueueHandler implements Runnable {
 
     } else {
       clientHandler.getCommonList().add(message);
+      System.out.println("nie znaleziono");
     }
   }
+
+  private void echo(Message message){
+    ClientHandler clientHandler = clientsMap.get(message.getUsername());
+    Gson gson = new Gson();
+    clientHandler.getOut().write(gson.toJson(message) + "\n");
+    clientHandler.getOut().flush();
+  }
+
+  // TODO rozłaczenie z drugim klientem,usuwanie z listy etc.
+ private void logout(Message message){
+   ClientHandler user = clientsMap.get(message.getUsername());
+
+//   ClientHandler connectedUser = clientsMap.get(user.getConnectedUser());
+//   user.setCommonList(null);
+//   connectedUser.setConnectedUser(null);
+//   connectedUser.setCommonList(null);
+   clientsMap.remove(message.getUsername());
+ }
+
 }

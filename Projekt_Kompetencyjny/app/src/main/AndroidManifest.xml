@@ -12,6 +12,8 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true">
+        <activity android:name=".Match">
+        </activity>
         <activity android:name=".MovieListActivity">
         </activity>
         <activity android:name=".MainActivity"/>
@@ -28,7 +30,6 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
         <activity android:name=".CardSwipeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

@@ -1,5 +1,6 @@
 package com.movie4us;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,125 +17,163 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class CardSwipeActivity extends AppCompatActivity {
-    private static final String TAG = "CardSwipeActivity";
-    private CardStackLayoutManager manager;
-    private CardAdapter adapter;
-    Message message ;
+  private static final String TAG = "CardSwipeActivity";
+  private CardStackLayoutManager manager;
+  private CardAdapter adapter;
+  Message message;
+  Gson gson = new Gson();
+  private boolean litener = true;
+  Connection connection;
+  Runnable litenerThread;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_menu);
-        message = new Message();
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_menu);
+    message = new Message();
+    connection = Connection.getConnection();
+    litener = true;
+    
+    CardStackView cardStackView = findViewById(R.id.card_stack_view);
+    manager =
+        new CardStackLayoutManager(
+            this,
+            new CardStackListener() {
+              @Override
+              public void onCardDragging(Direction direction, float ratio) {
+                // Log.d(TAG, "onCardDragging: " + direction.name() + "ratio: " + ratio);
+              }
 
-        CardStackView cardStackView = findViewById(R.id.card_stack_view);
-        manager =
-                new CardStackLayoutManager(
-                        this,
-                        new CardStackListener() {
-                            @Override
-                            public void onCardDragging(Direction direction, float ratio) {
-                                // Log.d(TAG, "onCardDragging: " + direction.name() + "ratio: " + ratio);
-                            }
+              @Override
+              public void onCardSwiped(Direction direction) {
+                Log.d(
+                    TAG,
+                    "onCardSwiped: "
+                        + adapter.getItems().get(manager.getTopPosition() - 1).id
+                        + " driection = "
+                        + direction);
+                if (direction == Direction.Right) {
+                  Toast.makeText(CardSwipeActivity.this, "Accept film", Toast.LENGTH_SHORT).show();
+                  message.setAction("selectedMovie");
+                  message.setUsername(connection.getUsername());
+                  message.setMovieId(adapter.getItems().get(manager.getTopPosition() - 1).id);
+                  connection
+                      .getExecutorService()
+                      .execute(() -> connection.send(gson.toJson(message)));
+                }
+                if (direction == Direction.Left) {
+                  Toast.makeText(CardSwipeActivity.this, "Reject film", Toast.LENGTH_SHORT).show();
+                }
+              }
 
-                            @Override
-                            public void onCardSwiped(Direction direction) {
-                                Log.d(
-                                        TAG, "onCardSwiped: " + adapter.getItems().get(manager.getTopPosition()).id + " driection = " + direction);
-                                if (direction == Direction.Right) {
-                                    Toast.makeText(CardSwipeActivity.this, "Accept film", Toast.LENGTH_SHORT).show();
+              @Override
+              public void onCardRewound() {
+                Log.d(TAG, "onCardRewound: " + manager.getTopPosition());
+              }
 
-                                }
-                                if (direction == Direction.Left) {
+              @Override
+              public void onCardCanceled() {
+                Log.d(TAG, "onCardRewound: " + manager.getTopPosition());
+              }
 
-                                    Toast.makeText(CardSwipeActivity.this, "Reject film", Toast.LENGTH_SHORT).show();
-                                }
-                            }
+              @Override
+              public void onCardAppeared(View view, int position) {}
 
-                            @Override
-                            public void onCardRewound() {
-                                Log.d(TAG, "onCardRewound: " + manager.getTopPosition());
-                            }
+              @Override
+              public void onCardDisappeared(View view, int position) {}
+            });
 
-                            @Override
-                            public void onCardCanceled() {
-                                Log.d(TAG, "onCardRewound: " + manager.getTopPosition());
-                            }
+    manager.setStackFrom(StackFrom.None);
+    manager.setVisibleCount(3);
+    manager.setTranslationInterval(8.0f);
+    manager.setScaleInterval(0.95f);
+    manager.setSwipeThreshold(0.3f);
+    manager.setMaxDegree(20.0f);
+    manager.setDirections(Direction.FREEDOM);
+    manager.setCanScrollHorizontal(true);
+    manager.setCanScrollVertical(false);
+    manager.setSwipeableMethod(SwipeableMethod.Manual);
+    manager.setOverlayInterpolator(new LinearInterpolator());
 
-                            @Override
-                            public void onCardAppeared(View view, int position) {}
+    litenerThread =
+        () -> {
+          Gson gson = new Gson();
+          String s = null;
+          while (litener) {
 
-                            @Override
-                            public void onCardDisappeared(View view, int position) {}
-                        });
+            try {
+              s = connection.getIn().readLine();
+            } catch (IOException e) {
+              e.printStackTrace();
+            }
+            message = gson.fromJson(s, Message.class);
 
-        manager.setStackFrom(StackFrom.None);
-        manager.setVisibleCount(3);
-        manager.setTranslationInterval(8.0f);
-        manager.setScaleInterval(0.95f);
-        manager.setSwipeThreshold(0.3f);
-        manager.setMaxDegree(20.0f);
-        manager.setDirections(Direction.FREEDOM);
-        manager.setCanScrollHorizontal(true);
-        manager.setCanScrollVertical(false);
-        manager.setSwipeableMethod(SwipeableMethod.Manual);
-        manager.setOverlayInterpolator(new LinearInterpolator());
+            switch (message.getAction()) {
+              case "category":
+                {
+                  runOnUiThread(
+                      () -> {
+                        adapter = new CardAdapter(addMovieList(message.getMovies()));
+                        cardStackView.setLayoutManager(manager);
+                        cardStackView.setAdapter(adapter);
+                        cardStackView.setItemAnimator(new DefaultItemAnimator());
+                      });
 
+                  break;
+                }
+              case "match":
+                {
+                  System.out.println("***************** MATCH !!!!!!!!!!!!!!!!!!!!!");
+                  // TODO opracowanie widoku pop-outu przy matchu filmów -> argumnenty przekazywane
+                  // przez putExtra
+                  Intent matach = new Intent(getApplicationContext(), Match.class);
+                  startActivity(matach);
+                  break;
+                }
+              case "matchStop":
+                {
+                  litener = false;
+                  break;
+                }
+            }
+          }
+        };
 
+    connection.getExecutorService().execute(litenerThread);
+  }
 
+  private ArrayList<MovieData> addMovieList(PageMovieData pageMovieData) {
+    return pageMovieData.movieDataArray;
+  }
 
-        Connection connection = Connection.getConnection();
+  @Override
+  protected void onStop() {
+    super.onStop();
+  }
+
+  @Override
+  protected void onDestroy() {
+    super.onDestroy();
+  }
+
+  @Override
+  protected void onPause() {
+    super.onPause();
+    litener = false;
     connection
         .getExecutorService()
         .execute(
-            new Runnable() {
-              @Override
-              public void run() {
-                //                                Message message = new Message();
-                Gson gson = new Gson();
-                String s = null;
-                while (true) {
-
-                  try {
-                    s = connection.getIn().readLine();
-                  } catch (IOException e) {
-                    e.printStackTrace();
-                  }
-                  message = gson.fromJson(s, Message.class);
-
-                  switch (message.getAction()) {
-                    case "category":
-                      {
-                        ArrayList<MovieData> movieDataArray = message.getMovies().movieDataArray;
-                        for (MovieData movieData : movieDataArray) {
-                          System.out.println("id: "   + movieData.id);
-                        }
-
-                        runOnUiThread(
-                            () -> {
-                              adapter = new CardAdapter(addMovieList(message.getMovies()));
-                              cardStackView.setLayoutManager(manager);
-                              cardStackView.setAdapter(adapter);
-                              cardStackView.setItemAnimator(new DefaultItemAnimator());
-                            });
-
-                        break;
-                      }
-                  }
-                }
-              }
+            () -> {
+              message.setUsername(connection.getUsername());
+              message.setAction("matchStop");
+              connection.send(gson.toJson(message));
             });
+  }
 
-//        adapter = new CardAdapter(addMovieList(pageMovieData));
-//        cardStackView.setLayoutManager(manager);
-//        cardStackView.setAdapter(adapter);
-//        cardStackView.setItemAnimator(new DefaultItemAnimator());
-
-
-
-    }
-
-    private ArrayList<MovieData> addMovieList(PageMovieData pageMovieData) {
-        return pageMovieData.movieDataArray;
-    }
+  @Override
+  protected void onRestart() {
+    super.onRestart();
+    litener = true;
+    connection.getExecutorService().execute(litenerThread);
+  }
 }
