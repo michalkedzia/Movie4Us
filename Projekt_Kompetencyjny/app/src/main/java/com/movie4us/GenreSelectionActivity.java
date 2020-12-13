@@ -7,6 +7,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,6 +23,8 @@ public class GenreSelectionActivity extends AppCompatActivity {
   private Message message;
   private Gson gson;
   boolean listener;
+  private Connection connection;
+  private Runnable listenerThread;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -36,49 +39,57 @@ public class GenreSelectionActivity extends AppCompatActivity {
 
     toolbar = findViewById(R.id.myToolBar);
     setSupportActionBar(toolbar);
-    Connection connection = Connection.getConnection();
+    connection = Connection.getConnection();
     listener = true;
 
-    connection
-        .getExecutorService()
-        .execute(
-            () -> {
-              while (listener) {
-                try {
-                  String s = connection.getIn().readLine();
-                  message = gson.fromJson(s, Message.class);
+    TextView logout = findViewById(R.id.logout);
+    logout.setOnClickListener(
+        v -> {
+          connection
+              .getExecutorService()
+              .execute(
+                  () -> {
+                    message.setUsername(connection.getUsername());
+                    message.setAction("logout");
+                    connection.send(gson.toJson(message));
+                  });
+          logout();
+        });
 
-                  switch (message.getAction()) {
-                      //                    case "category":
-                      //                      {
-                      //                        int i = 0;
-                      //                        for (MovieData movieData :
-                      // message.getMovies().movieDataArray) {
-                      //                          System.out.println(i);
-                      //                          i++;
-                      //                          movieData.toString();
-                      //                        }
-                      //                        break;
-                      //                      }
-                    case "selectedGenres":
-                      {
-                        listener = false;
+    listenerThread =
+        () -> {
+          System.out.println("listenerThread - genreActivity start !!!!!");
+          while (listener) {
+            try {
+              String s = connection.getIn().readLine();
+              message = gson.fromJson(s, Message.class);
 
-                        Intent intent =
-                            new Intent(getApplicationContext(), CardSwipeActivity.class);
-                        startActivity(intent);
+              switch (message.getAction()) {
+                case "selectedGenres":
+                  {
+                    listener = false;
+                    System.out.println("genres selected");
+                    Intent intent = new Intent(getApplicationContext(), CardSwipeActivity.class);
+                    startActivity(intent);
 
-                        break;
-                      }
-                    case "match":
+                    break;
                   }
-
-                  System.out.println(s);
-                } catch (IOException e) {
-                  e.printStackTrace();
-                }
+                case "logout":
+                  {
+                    listener = false;
+                    System.out.println("logout server");
+                    break;
+                  }
               }
-            });
+
+              System.out.println(s);
+            } catch (IOException e) {
+              e.printStackTrace();
+            }
+          }
+        };
+
+    connection.getExecutorService().execute(listenerThread);
 
     buttonCategories.setOnClickListener(
         v ->
@@ -109,5 +120,24 @@ public class GenreSelectionActivity extends AppCompatActivity {
     MenuInflater inflater = getMenuInflater();
     inflater.inflate(R.menu.menu, menu);
     return true;
+  }
+
+  private void logout() {
+    connection.getExecutorService().shutdown();
+    connection.getExecutorService().shutdownNow();
+
+    try {
+      connection.getOut().close();
+      connection.getIn().close();
+      connection.getSocket().close();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    connection.getExecutorService().shutdownNow();
+    System.out.println("logout koniec");
+    Intent intent = new Intent(getApplicationContext(), Login.class);
+    startActivity(intent);
+    finish();
   }
 }

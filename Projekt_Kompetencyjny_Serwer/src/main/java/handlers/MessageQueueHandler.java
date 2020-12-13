@@ -54,20 +54,20 @@ public class MessageQueueHandler implements Runnable {
             break;
           }
         case "echo":
-        {
-          echo(peek);
-          break;
-        }
+          {
+            echo(peek);
+            break;
+          }
         case "logout":
-        {
-          logout(peek);
-          break;
-        }
+          {
+            logout(peek);
+            break;
+          }
         case "matchStop":
-        {
-          echo(peek);
-          break;
-        }
+          {
+            echo(peek);
+            break;
+          }
       }
       MyLOG.myLOG(peek.toString());
     }
@@ -100,11 +100,11 @@ public class MessageQueueHandler implements Runnable {
   private void sendMoviesToBothUsers(Message message, List<String> genres) {
 
     // ** Dodatkowa wiadomosc od serwera do klienta- wybarnie kategorii
-    Message genresSelection =  new Message();
+    Message genresSelection = new Message();
     Gson gson = new Gson();
     genresSelection.setUsername(message.getUsername());
     genresSelection.setAction("selectedGenres");
-    ClientHandler client  = clientsMap.get(message.getUsername());
+    ClientHandler client = clientsMap.get(message.getUsername());
     client.getOut().write(gson.toJson(genresSelection) + "\n");
     client.getOut().flush();
 
@@ -114,12 +114,10 @@ public class MessageQueueHandler implements Runnable {
     client.getOut().flush();
     // **
 
-
     DataMovies dataMovies = new DataMovies(genres);
     PageMovieData movies = dataMovies.getMovies();
     message.setMovies(movies);
     message.setAction("category");
-
 
     ClientHandler clientHandler = clientsMap.get(message.getUsername());
 
@@ -159,8 +157,6 @@ public class MessageQueueHandler implements Runnable {
     ClientHandler clientHandler = clientsMap.get(message.getUsername());
     String connectedUser = clientHandler.getConnectedUser();
 
-
-
     if (clientHandler.getCommonList().stream()
         .anyMatch(
             m ->
@@ -184,7 +180,7 @@ public class MessageQueueHandler implements Runnable {
     }
   }
 
-  private void echo(Message message){
+  private void echo(Message message) {
     ClientHandler clientHandler = clientsMap.get(message.getUsername());
     Gson gson = new Gson();
     clientHandler.getOut().write(gson.toJson(message) + "\n");
@@ -192,14 +188,13 @@ public class MessageQueueHandler implements Runnable {
   }
 
   // TODO rozłaczenie z drugim klientem,usuwanie z listy etc.
- private void logout(Message message){
-   ClientHandler user = clientsMap.get(message.getUsername());
+  private void logout(Message message) {
+    ClientHandler user = clientsMap.get(message.getUsername());
 
-//   ClientHandler connectedUser = clientsMap.get(user.getConnectedUser());
-//   user.setCommonList(null);
-//   connectedUser.setConnectedUser(null);
-//   connectedUser.setCommonList(null);
-   clientsMap.remove(message.getUsername());
- }
-
+    //   ClientHandler connectedUser = clientsMap.get(user.getConnectedUser());
+    //   user.setCommonList(null);
+    //   connectedUser.setConnectedUser(null);
+    //   connectedUser.setCommonList(null);
+    clientsMap.remove(message.getUsername());
+  }
 }

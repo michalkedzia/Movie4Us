@@ -5,7 +5,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Button;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -15,15 +14,12 @@ import androidx.appcompat.widget.Toolbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
 import java.io.IOException;
-import java.util.Optional;
 
 public class MainActivity extends AppCompatActivity {
 
   private Toolbar toolbar;
   private Button buttonConnect;
   private TextInputEditText textInputUsernameToConnect;
-  private Spinner spinnerCategories;
-  private Button buttonCategories;
   private Message message;
   private Gson gson;
   boolean listener;
@@ -33,11 +29,10 @@ public class MainActivity extends AppCompatActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
     setContentView(R.layout.activity_main);
     textInputUsernameToConnect = findViewById(R.id.usernameToConnect);
     buttonConnect = findViewById(R.id.buttonConnect);
-    spinnerCategories = findViewById(R.id.spinnerCategories);
-    buttonCategories = findViewById(R.id.buttonCategories);
 
     gson = new Gson();
     message = new Message();
@@ -47,33 +42,18 @@ public class MainActivity extends AppCompatActivity {
     connection = Connection.getConnection();
     listener = true;
 
-    Button echo;
-    echo = findViewById(R.id.echo);
-
-    echo.setOnClickListener(
+    TextView logout = findViewById(R.id.logout);
+    logout.setOnClickListener(
         v -> {
           connection
               .getExecutorService()
               .execute(
                   () -> {
-                    System.out.println("send echo !!1");
-                    Message m = new Message();
-                    Gson gson = new Gson();
-                    m.setAction("echo");
-                    m.setUsername(connection.getUsername());
-                    connection.send(gson.toJson(m));
+                    message.setUsername(connection.getUsername());
+                    message.setAction("logout");
+                    connection.send(gson.toJson(message));
                   });
-        });
-
-        TextView logout = findViewById(R.id.logout);
-        logout.setOnClickListener(v -> {
-            connection.getExecutorService().execute(() -> {
-                message.setUsername(connection.getUsername());
-                message.setAction("logout");
-                connection.send(gson.toJson(message));
-            });
-            logout();
-
+          logout();
         });
 
     listenerThread =
@@ -87,13 +67,9 @@ public class MainActivity extends AppCompatActivity {
               switch (message.getAction()) {
                 case "connect":
                   {
-                    System.out.println(message.toString());
-                    break;
-                  }
-                case "selectedGenres":
-                  {
                     listener = false;
-                    Intent intent = new Intent(getApplicationContext(), CardSwipeActivity.class);
+                    System.out.println(message.toString());
+                    Intent intent = new Intent(getApplicationContext(), GenreSelectionActivity.class);
                     startActivity(intent);
                     System.out.println("koniec watku");
                     break;
@@ -119,8 +95,8 @@ public class MainActivity extends AppCompatActivity {
               System.out.println(s);
             } catch (IOException e) {
 
-//              e.printStackTrace();
-              return ;
+              //              e.printStackTrace();
+              return;
             }
           }
         };
@@ -137,18 +113,6 @@ public class MainActivity extends AppCompatActivity {
                       message.setConnectedUser(
                           String.valueOf(textInputUsernameToConnect.getText()));
                       message.setUsername(connection.getUsername());
-                      connection.send(gson.toJson(message));
-                    }));
-
-    buttonCategories.setOnClickListener(
-        v ->
-            connection
-                .getExecutorService()
-                .execute(
-                    () -> {
-                      message.setAction("category");
-                      message.setUsername(connection.getUsername());
-                      message.setSelectedCategory(spinnerCategories.getSelectedItem().toString());
                       connection.send(gson.toJson(message));
                     }));
   }
@@ -190,9 +154,8 @@ public class MainActivity extends AppCompatActivity {
       e.printStackTrace();
     }
 
-
     connection.getExecutorService().shutdownNow();
-      System.out.println("logout koniec");
+    System.out.println("logout koniec");
     Intent intent = new Intent(getApplicationContext(), Login.class);
     startActivity(intent);
     finish();
