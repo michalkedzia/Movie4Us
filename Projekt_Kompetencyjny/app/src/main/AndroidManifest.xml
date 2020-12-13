@@ -15,6 +15,7 @@
         <activity android:name=".MovieListActivity">
         </activity>
         <activity android:name=".MainActivity"/>
+        <activity android:name=".GenreSelectionActivity"/>
         <activity
                 android:name=".SignUp"
                 android:theme="@style/Theme.Design.Light.NoActionBar"/>

@@ -1,36 +1,24 @@
 package com.movie4us;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
-
 import android.widget.Spinner;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
-
 import androidx.appcompat.app.AppCompatActivity;
-import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
-import data.MovieData;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
-public class MainActivity extends AppCompatActivity {
-
+public class GenreSelectionActivity extends AppCompatActivity {
   private Toolbar toolbar;
-  private Button buttonConnect;
-  private TextInputEditText textInputUsernameToConnect;
+  private Spinner spinnerCategories;
+  private Button buttonCategories;
   private Message message;
   private Gson gson;
   boolean listener;
@@ -38,9 +26,10 @@ public class MainActivity extends AppCompatActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
-    textInputUsernameToConnect = findViewById(R.id.usernameToConnect);
-    buttonConnect = findViewById(R.id.buttonConnect);
+
+    setContentView(R.layout.genre_selection);
+    spinnerCategories = findViewById(R.id.spinnerCategories);
+    buttonCategories = findViewById(R.id.buttonCategories);
 
     gson = new Gson();
     message = new Message();
@@ -60,17 +49,6 @@ public class MainActivity extends AppCompatActivity {
                   message = gson.fromJson(s, Message.class);
 
                   switch (message.getAction()) {
-                    case "connect":
-                      {
-                        System.out.println(message.toString());
-                        listener = false;
-
-                        Intent intent =
-                            new Intent(getApplicationContext(), GenreSelectionActivity.class);
-                        startActivity(intent);
-
-                        break;
-                      }
                       //                    case "category":
                       //                      {
                       //                        int i = 0;
@@ -92,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
 
                         break;
                       }
+                    case "match":
                   }
 
                   System.out.println(s);
@@ -101,16 +80,15 @@ public class MainActivity extends AppCompatActivity {
               }
             });
 
-    buttonConnect.setOnClickListener(
+    buttonCategories.setOnClickListener(
         v ->
             connection
                 .getExecutorService()
                 .execute(
                     () -> {
-                      message.setAction("connect");
-                      message.setConnectedUser(
-                          String.valueOf(textInputUsernameToConnect.getText()));
+                      message.setAction("category");
                       message.setUsername(connection.getUsername());
+                      message.setSelectedCategory(spinnerCategories.getSelectedItem().toString());
                       connection.send(gson.toJson(message));
                     }));
   }
