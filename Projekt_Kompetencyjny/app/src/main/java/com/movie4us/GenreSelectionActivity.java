@@ -1,25 +1,25 @@
 package com.movie4us;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
+
 import java.io.IOException;
 
-public class MainActivity extends AppCompatActivity {
-
+public class GenreSelectionActivity extends AppCompatActivity {
   private Toolbar toolbar;
-  private Button buttonConnect;
-  private TextInputEditText textInputUsernameToConnect;
+  private Spinner spinnerCategories;
+  private Button buttonCategories;
   private Message message;
   private Gson gson;
   boolean listener;
@@ -30,9 +30,9 @@ public class MainActivity extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    setContentView(R.layout.activity_main);
-    textInputUsernameToConnect = findViewById(R.id.usernameToConnect);
-    buttonConnect = findViewById(R.id.buttonConnect);
+    setContentView(R.layout.genre_selection);
+    spinnerCategories = findViewById(R.id.spinnerCategories);
+    buttonCategories = findViewById(R.id.buttonCategories);
 
     gson = new Gson();
     message = new Message();
@@ -58,30 +58,20 @@ public class MainActivity extends AppCompatActivity {
 
     listenerThread =
         () -> {
-          System.out.println("listenerThread  start !!!!!");
+          System.out.println("listenerThread - genreActivity start !!!!!");
           while (listener) {
             try {
               String s = connection.getIn().readLine();
               message = gson.fromJson(s, Message.class);
 
               switch (message.getAction()) {
-                case "connect":
+                case "selectedGenres":
                   {
                     listener = false;
-                    System.out.println(message.toString());
-                    Intent intent = new Intent(getApplicationContext(), GenreSelectionActivity.class);
+                    System.out.println("genres selected");
+                    Intent intent = new Intent(getApplicationContext(), CardSwipeActivity.class);
                     startActivity(intent);
-                    System.out.println("koniec watku");
-                    break;
-                  }
-                case "match":
-                  {
-                    System.out.println("***************** MATCH !!!!!!!!!!!!!!!!!!!!!");
-                    break;
-                  }
-                case "echo":
-                  {
-                    System.out.println("->>>>>>>> " + message.getAction());
+
                     break;
                   }
                 case "logout":
@@ -94,25 +84,22 @@ public class MainActivity extends AppCompatActivity {
 
               System.out.println(s);
             } catch (IOException e) {
-
-              //              e.printStackTrace();
-              return;
+              e.printStackTrace();
             }
           }
         };
 
     connection.getExecutorService().execute(listenerThread);
 
-    buttonConnect.setOnClickListener(
+    buttonCategories.setOnClickListener(
         v ->
             connection
                 .getExecutorService()
                 .execute(
                     () -> {
-                      message.setAction("connect");
-                      message.setConnectedUser(
-                          String.valueOf(textInputUsernameToConnect.getText()));
+                      message.setAction("category");
                       message.setUsername(connection.getUsername());
+                      message.setSelectedCategory(spinnerCategories.getSelectedItem().toString());
                       connection.send(gson.toJson(message));
                     }));
   }
@@ -126,13 +113,6 @@ public class MainActivity extends AppCompatActivity {
         break;
     }
     return super.onOptionsItemSelected(item);
-  }
-
-  @Override
-  protected void onRestart() {
-    super.onRestart();
-    listener = true;
-    connection.getExecutorService().execute(listenerThread);
   }
 
   @Override
