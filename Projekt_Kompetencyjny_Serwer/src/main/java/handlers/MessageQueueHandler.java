@@ -38,6 +38,16 @@ public class MessageQueueHandler implements Runnable {
       }
 
       switch (peek.getAction()) {
+        case "accept":
+        {
+          sendInfo(peek, "accept");
+          break;
+        }
+        case "reject":
+        {
+          sendInfo(peek, "reject");
+          break;
+        }
         case "connect":
           {
             connectTwoUser(peek.getUsername(), peek.getConnectedUser());
@@ -71,6 +81,18 @@ public class MessageQueueHandler implements Runnable {
       }
       MyLOG.myLOG(peek.toString());
     }
+  }
+
+  private void sendInfo(Message message, String action){
+    ClientHandler clientHandlerTo = clientsMap.get(message.getConnectedUser());
+
+    Message acceptMessage = new Message();
+    acceptMessage.setAction(action);
+    acceptMessage.setConnectedUser(message.getUsername());
+    Gson gson = new Gson();
+
+    clientHandlerTo.getOut().write(gson.toJson(acceptMessage) + "\n");
+    clientHandlerTo.getOut().flush();
   }
 
   private void categorySelection(Message message) {
@@ -137,14 +159,29 @@ public class MessageQueueHandler implements Runnable {
     clientHandlerFrom.setConnectedUser(to);
     clientHandlerTo.setConnectedUser(from);
 
-    Message message = new Message();
-    message.setAction("connect");
+    Message messageFrom = new Message();
+    messageFrom.setAction("connect");
+    messageFrom.setUsername(from);
+    messageFrom.setConnectedUser(to);
+    messageFrom.setStatus("out");
+
+    Message messageTo = new Message();
+    messageTo.setAction("connect");
+    messageTo.setUsername(to);
+    messageTo.setConnectedUser(from);
+    messageTo.setStatus("in");
+
+//    Message message = new Message();
+//    message.setAction("connect");
+//    message.setUsername(to);
+//    message.setConnectedUser(from);
+
     Gson gson = new Gson();
 
-    clientHandlerFrom.getOut().write(gson.toJson(message) + "\n");
+    clientHandlerFrom.getOut().write(gson.toJson(messageFrom) + "\n");
     clientHandlerFrom.getOut().flush();
 
-    clientHandlerTo.getOut().write(gson.toJson(message) + "\n");
+    clientHandlerTo.getOut().write(gson.toJson(messageTo) + "\n");
     clientHandlerTo.getOut().flush();
 
     Vector<Message> list = new Vector<>();

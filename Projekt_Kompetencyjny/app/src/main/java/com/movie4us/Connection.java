@@ -96,4 +96,12 @@ public class Connection {
   public void setIn(BufferedReader in) {
     this.in = in;
   }
+
+  public Message getMessage() {
+    return message;
+  }
+
+  public void setMessage(Message message) {
+    this.message = message;
+  }
 }
