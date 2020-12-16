@@ -65,13 +65,38 @@ public class MainActivity extends AppCompatActivity {
               message = gson.fromJson(s, Message.class);
 
               switch (message.getAction()) {
+                case "accept":
+                  {
+                    AcceptDialog dialog = new AcceptDialog();
+                    dialog.setMessage(message);
+                    dialog.show(getSupportFragmentManager(), "accept_dialog");
+                    break;
+                  }
+                case "reject":
+                  {
+                    InfoDialog dialog = new InfoDialog();
+                    dialog.setMessage(message);
+                    dialog.show(getSupportFragmentManager(), "info_dialog");
+                    break;
+                  }
                 case "connect":
                   {
                     listener = false;
-                    System.out.println(message.toString());
-                    Intent intent = new Intent(getApplicationContext(), GenreSelectionActivity.class);
-                    startActivity(intent);
-                    System.out.println("koniec watku");
+                    if(!message.getStatus().equals("out")){
+                      InfoDialog dialog = new InfoDialog();
+                      dialog.setMessage(message);
+                      Intent intent = new Intent(getApplicationContext(), GenreSelectionActivity.class);
+                      dialog.setIntent(intent);
+                      dialog.show(getSupportFragmentManager(), "info_dialog");
+                    } else {
+                      System.out.println(message.toString());
+                      Intent intent = new Intent(getApplicationContext(), GenreSelectionActivity.class);
+                      startActivity(intent);
+                    }
+//                    System.out.println(message.toString());
+//                    Intent intent = new Intent(getApplicationContext(), GenreSelectionActivity.class);
+//                    startActivity(intent);
+//                    System.out.println("koniec watku");
                     break;
                   }
                 case "match":
@@ -109,7 +134,8 @@ public class MainActivity extends AppCompatActivity {
                 .getExecutorService()
                 .execute(
                     () -> {
-                      message.setAction("connect");
+                      //message.setAction("connect");
+                      message.setAction("accept");
                       message.setConnectedUser(
                           String.valueOf(textInputUsernameToConnect.getText()));
                       message.setUsername(connection.getUsername());
