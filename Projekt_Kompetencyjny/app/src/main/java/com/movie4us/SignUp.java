@@ -76,7 +76,7 @@ public class SignUp extends AppCompatActivity {
 
                                         PutData putData =
                                                 new PutData(
-                                                        "http://192.168.1.101/LoginRegister/signup.php", "POST", field, data);
+                                                        "http://192.168.8.132/LoginRegister/signup.php", "POST", field, data);
                                         if (putData.startPut()) {
                                             if (putData.onComplete()) {
                                                 progressBar.setVisibility(View.GONE);

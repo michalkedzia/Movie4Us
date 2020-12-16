@@ -6,6 +6,7 @@ public class Message {
   private String username;
   private String connectedUser;
   private String action;
+  private String status;
   private String selectedCategory;
   private PageMovieData movies;
   private int movieId;
@@ -33,6 +34,9 @@ public class Message {
         + '\''
         + ", action='"
         + action
+        + '\''
+        + ", status='"
+        + status
         + '\''
         + ", selectedCategory='"
         + selectedCategory
@@ -76,5 +80,13 @@ public class Message {
 
   public void setAction(String action) {
     this.action = action;
+  }
+
+  public String getStatus() {
+    return status;
+  }
+
+  public void setStatus(String status) {
+    this.status = status;
   }
 }
