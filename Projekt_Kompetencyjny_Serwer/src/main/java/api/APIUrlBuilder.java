@@ -40,6 +40,12 @@ public class APIUrlBuilder {
           retUrl = API_URL + "genre/movie/list?api_key=" + API_KEY;
           break;
         }
+      case PROVIDERS:
+        {
+          this.callType = callType;
+          retUrl = API_URL + "movie/SEARCHID/watch/providers?api_key=" + API_KEY;
+          break;
+        }
     }
     return retUrl;
   }
@@ -176,6 +182,23 @@ public class APIUrlBuilder {
           break;
         }
     }
+  }
+
+  public String addProviderMovieId(int ID) throws APIException.WrongMovieIdException {
+    if (ID < 0) {
+      throw new APIException.WrongMovieIdException(
+          "Invalid ID value provided: ID must be greater than 0" + ID);
+    }
+
+    String tempUrl = retUrl;
+    tempUrl = tempUrl.replace("SEARCHID", Integer.toString(ID));
+    if (!tempUrl.contains(Integer.toString(ID))) {
+      throw new APIException.WrongMovieIdException("Invalid ID value provided: Wrong ID: " + ID);
+    }
+
+    this.retUrl = tempUrl;
+    System.out.println(retUrl);
+    return retUrl;
   }
 
   public String getRetUrl() {

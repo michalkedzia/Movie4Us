@@ -87,7 +87,7 @@ public class ClientHandler implements Runnable {
   public void run() {
     String json = null;
     Gson gson = new Gson();
-    Message message ;
+    Message message;
 
     while (true) {
       try {

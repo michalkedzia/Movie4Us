@@ -5,6 +5,75 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".Match">
+        tools:context=".Match"><![CDATA[
+    android:id="@+id/item_image2"/>
+    ]]>
+    <ImageView
+            android:id="@+id/item_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            android:alpha="0.7"/>
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="@drawable/gradation_black"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+                android:id="@+id/item_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:padding="15px"
+                android:textColor="@android:color/white"
+                android:textSize="25sp" android:alpha="0.7"/>
+
+        <TextView
+                android:id="@+id/item_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textColor="@android:color/white"
+                android:padding="20px"
+                android:minLines="5"
+                android:textSize="15sp" android:alpha="0.7"/>
+
+        <TextView
+                android:id="@+id/item_film_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textColor="@android:color/white"
+                android:padding="30px"
+                android:textSize="20sp" android:alpha="0.7"/>
+
+    </LinearLayout>
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:background="#d9e7ff"
+            android:id="@+id/linearLayout"
+            app:layout_constraintBottom_toBottomOf="@+id/item_image"
+            app:layout_constraintTop_toTopOf="@+id/item_image" app:layout_constraintVertical_bias="0.419"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.495">
+        <TextView
+                android:text="Match"
+                android:layout_width="200dp"
+                android:layout_height="50dp" android:id="@+id/textView3" android:layout_weight="1"
+                android:textAllCaps="true" android:textSize="30sp" android:textStyle="bold|italic"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large" android:textColor="#2e74ff"
+                android:gravity="center"/>
+        <ImageView
+                android:layout_width="10dp"
+                android:layout_height="wrap_content" app:srcCompat="@drawable/accepticon" android:id="@+id/imageView15"
+                android:layout_weight="1"/>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
