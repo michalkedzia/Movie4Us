@@ -38,7 +38,7 @@ public class Connection {
     executorService.execute(
         () -> {
           try {
-            socket = new Socket("192.168.8.132", 5000);
+            socket = new Socket("192.168.1.1", 5000);
             out = new PrintWriter(socket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
           } catch (IOException e) {
