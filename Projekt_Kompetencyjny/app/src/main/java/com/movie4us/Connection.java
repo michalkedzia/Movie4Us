@@ -1,6 +1,7 @@
 package com.movie4us;
 
 import com.google.gson.Gson;
+import config.Configuration;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -38,7 +39,7 @@ public class Connection {
     executorService.execute(
         () -> {
           try {
-            socket = new Socket("169.254.250.43", 5000);
+            socket = new Socket(Configuration.IP, 5000);
             out = new PrintWriter(socket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
           } catch (IOException e) {

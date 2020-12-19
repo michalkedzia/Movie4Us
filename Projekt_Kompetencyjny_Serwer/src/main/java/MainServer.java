@@ -13,6 +13,8 @@ import java.util.concurrent.*;
 import model.*;
 import handlers.*;
 import log.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MainServer {
   public static void main(String[] args) throws IOException {
@@ -20,7 +22,6 @@ public class MainServer {
     ServerSocket serverSocket = new ServerSocket(5000);
     Gson gson = new Gson();
     Message message;
-
     ConcurrentMap<String, ClientHandler> clientsMap = new ConcurrentHashMap<>();
 
     //        List<ClientHandler> clientHandlerList = new CopyOnWriteArrayList<>();

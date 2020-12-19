@@ -194,6 +194,8 @@ public class MessageQueueHandler implements Runnable {
     ClientHandler clientHandler = clientsMap.get(message.getUsername());
     String connectedUser = clientHandler.getConnectedUser();
 
+    System.out.println("*******- > "+message.getUsername()+  " select  " + message.getMovieId());
+
     if (clientHandler.getCommonList().stream()
         .anyMatch(
             m ->
@@ -201,6 +203,7 @@ public class MessageQueueHandler implements Runnable {
                     && m.getMovieId() == message.getMovieId()))) {
       Message match = new Message();
       match.setAction("match");
+      match.setMovieId(message.getMovieId());
       Gson gson = new Gson();
 
       clientHandler.getOut().write(gson.toJson(match) + "\n");
