@@ -23,6 +23,7 @@ public class GenreSelectionActivity extends AppCompatActivity {
   private Message message;
   private Gson gson;
   boolean listener;
+  boolean cancelGenresSelection;
   private Connection connection;
   private Runnable listenerThread;
 
@@ -41,6 +42,7 @@ public class GenreSelectionActivity extends AppCompatActivity {
     setSupportActionBar(toolbar);
     connection = Connection.getConnection();
     listener = true;
+    cancelGenresSelection = true;
 
     TextView logout = findViewById(R.id.logout);
     logout.setOnClickListener(
@@ -68,6 +70,7 @@ public class GenreSelectionActivity extends AppCompatActivity {
                 case "selectedGenres":
                   {
                     listener = false;
+                    cancelGenresSelection = false;
                     System.out.println("genres selected");
                     Intent intent = new Intent(getApplicationContext(), CardSwipeActivity.class);
                     startActivity(intent);
@@ -77,19 +80,37 @@ public class GenreSelectionActivity extends AppCompatActivity {
                 case "logout":
                   {
                     listener = false;
+                    cancelGenresSelection = false;
                     System.out.println("logout server");
+                    break;
+                  }
+                case "cancelGenresSelection":
+                  {
+                    cancelGenresSelection = false;
+                    listener = false;
+                    InfoDialog infoDialog =
+                        new InfoDialog(
+                            "Błąd", "Użytkownik po drugiej stronie wyszedł z wyboru kategori.");
+                    infoDialog.show(getSupportFragmentManager(), "infoDialog");
+
+                    break;
+                  }
+                case "stop":
+                  {
+                    System.out.println("************** GENRE SELECTED ACTIVITY    stop");
+                    cancelGenresSelection = false;
+                    listener = false;
                     break;
                   }
               }
 
-              System.out.println(s);
             } catch (IOException e) {
               e.printStackTrace();
             }
           }
         };
 
-    connection.getExecutorService().execute(listenerThread);
+    //    connection.getExecutorService().execute(listenerThread);
 
     buttonCategories.setOnClickListener(
         v ->
@@ -139,5 +160,56 @@ public class GenreSelectionActivity extends AppCompatActivity {
     Intent intent = new Intent(getApplicationContext(), Login.class);
     startActivity(intent);
     finish();
+  }
+
+  @Override
+  protected void onPause() {
+    super.onPause();
+    if (cancelGenresSelection) {
+      connection
+          .getExecutorService()
+          .execute(
+              () -> {
+                Message msg = new Message();
+                msg.setAction("cancelGenresSelection");
+                msg.setUsername(connection.getUsername());
+                connection.send(gson.toJson(msg));
+              });
+    }
+    System.err.println("onPause()");
+  }
+
+  @Override
+  protected void onStart() {
+    super.onStart();
+    System.err.println("onStart()");
+  }
+
+  @Override
+  protected void onStop() {
+    super.onStop();
+    System.err.println("onStop()");
+  }
+
+  @Override
+  protected void onDestroy() {
+    super.onDestroy();
+    System.err.println("onDestroy()");
+  }
+
+  @Override
+  protected void onResume() {
+    super.onResume();
+
+    listener = true;
+    cancelGenresSelection = true;
+    connection.getExecutorService().execute(listenerThread);
+    System.err.println("onResume() ");
+  }
+
+  @Override
+  protected void onRestart() {
+    super.onRestart();
+    System.err.println("onRestart()");
   }
 }

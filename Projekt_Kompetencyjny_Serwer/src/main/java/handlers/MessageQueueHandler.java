@@ -39,15 +39,15 @@ public class MessageQueueHandler implements Runnable {
 
       switch (peek.getAction()) {
         case "accept":
-        {
-          sendInfo(peek, "accept");
-          break;
-        }
+          {
+            sendInfo(peek, "accept");
+            break;
+          }
         case "reject":
-        {
-          sendInfo(peek, "reject");
-          break;
-        }
+          {
+            sendInfo(peek, "reject");
+            break;
+          }
         case "connect":
           {
             connectTwoUser(peek.getUsername(), peek.getConnectedUser());
@@ -78,12 +78,17 @@ public class MessageQueueHandler implements Runnable {
             echo(peek);
             break;
           }
+        case "cancelGenresSelection":
+          {
+            cancelGenresSelection(peek);
+            break;
+          }
       }
       MyLOG.myLOG(peek.toString());
     }
   }
 
-  private void sendInfo(Message message, String action){
+  private void sendInfo(Message message, String action) {
     ClientHandler clientHandlerTo = clientsMap.get(message.getConnectedUser());
 
     Message acceptMessage = new Message();
@@ -171,10 +176,10 @@ public class MessageQueueHandler implements Runnable {
     messageTo.setConnectedUser(from);
     messageTo.setStatus("in");
 
-//    Message message = new Message();
-//    message.setAction("connect");
-//    message.setUsername(to);
-//    message.setConnectedUser(from);
+    //    Message message = new Message();
+    //    message.setAction("connect");
+    //    message.setUsername(to);
+    //    message.setConnectedUser(from);
 
     Gson gson = new Gson();
 
@@ -194,7 +199,7 @@ public class MessageQueueHandler implements Runnable {
     ClientHandler clientHandler = clientsMap.get(message.getUsername());
     String connectedUser = clientHandler.getConnectedUser();
 
-    System.out.println("*******- > "+message.getUsername()+  " select  " + message.getMovieId());
+    System.out.println("*******- > " + message.getUsername() + " select  " + message.getMovieId());
 
     if (clientHandler.getCommonList().stream()
         .anyMatch(
@@ -236,5 +241,21 @@ public class MessageQueueHandler implements Runnable {
     //   connectedUser.setConnectedUser(null);
     //   connectedUser.setCommonList(null);
     clientsMap.remove(message.getUsername());
+  }
+
+  private void cancelGenresSelection(Message message) {
+    ClientHandler clientHandler = clientsMap.get(message.getUsername());
+    Message msg = new Message();
+    Gson gson = new Gson();
+    msg.setAction("stop");
+    msg.setConnectedUser(clientHandler.getConnectedUser());
+    clientHandler.getOut().write(gson.toJson(msg) + "\n");
+    clientHandler.getOut().flush();
+
+    clientHandler = clientsMap.get(clientHandler.getConnectedUser());
+    msg.setAction("cancelGenresSelection");
+    msg.setConnectedUser(message.getUsername());
+    clientHandler.getOut().write(gson.toJson(msg) +"\n");
+    clientHandler.getOut().flush();
   }
 }

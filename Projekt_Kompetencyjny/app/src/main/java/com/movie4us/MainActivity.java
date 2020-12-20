@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
                   }
                 case "reject":
                   {
-                    InfoDialog dialog = new InfoDialog();
+                    ConnectDialog dialog = new ConnectDialog();
                     dialog.setMessage(message);
                     dialog.show(getSupportFragmentManager(), "info_dialog");
                     break;
@@ -82,21 +82,25 @@ public class MainActivity extends AppCompatActivity {
                 case "connect":
                   {
                     listener = false;
-                    if(!message.getStatus().equals("out")){
-                      InfoDialog dialog = new InfoDialog();
+                    if (!message.getStatus().equals("out")) {
+                      ConnectDialog dialog = new ConnectDialog();
                       dialog.setMessage(message);
-                      Intent intent = new Intent(getApplicationContext(), GenreSelectionActivity.class);
+                      Intent intent =
+                          new Intent(getApplicationContext(), GenreSelectionActivity.class);
                       dialog.setIntent(intent);
                       dialog.show(getSupportFragmentManager(), "info_dialog");
                     } else {
                       System.out.println(message.toString());
-                      Intent intent = new Intent(getApplicationContext(), GenreSelectionActivity.class);
+                      Intent intent =
+                          new Intent(getApplicationContext(), GenreSelectionActivity.class);
                       startActivity(intent);
+
                     }
-//                    System.out.println(message.toString());
-//                    Intent intent = new Intent(getApplicationContext(), GenreSelectionActivity.class);
-//                    startActivity(intent);
-//                    System.out.println("koniec watku");
+                    //                    System.out.println(message.toString());
+                    //                    Intent intent = new Intent(getApplicationContext(),
+                    // GenreSelectionActivity.class);
+                    //                    startActivity(intent);
+                    //                    System.out.println("koniec watku");
                     break;
                   }
                 case "match":
@@ -117,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
                   }
               }
 
-              System.out.println(s);
+              System.out.println("********************************"+s);
             } catch (IOException e) {
 
               //              e.printStackTrace();

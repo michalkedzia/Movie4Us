@@ -128,13 +128,16 @@ public class CardSwipeActivity extends AppCompatActivity {
                 {
                   System.out.println("***************** MATCH !!!!!!!!!!!!!!!!!!!!!");
                   Intent matach = new Intent(getApplicationContext(), Match.class);
-                  matach.putExtra("movie", getSelectedMovie(adapter.getItems(),message.getMovieId()));
+                  matach.putExtra(
+                      "movie", getSelectedMovie(adapter.getItems(), message.getMovieId()));
                   startActivity(matach);
+
                   break;
                 }
               case "matchStop":
                 {
-                  litener = false;
+                  //                  litener = false;
+                    // TODO opracowanie co dalej po matchu u obu klinetów
                   break;
                 }
             }
@@ -161,22 +164,23 @@ public class CardSwipeActivity extends AppCompatActivity {
   @Override
   protected void onPause() {
     super.onPause();
-    litener = false;
-    connection
-        .getExecutorService()
-        .execute(
-            () -> {
-              message.setUsername(connection.getUsername());
-              message.setAction("matchStop");
-              connection.send(gson.toJson(message));
-            });
+    System.out.println("onPause()  CARD SWIE @@@@@");
+    //    connection
+    //        .getExecutorService()
+    //        .execute(
+    //            () -> {
+    //              message.setUsername(connection.getUsername());
+    //              message.setAction("matchStop");
+    //              connection.send(gson.toJson(message));
+    //            });
   }
 
   @Override
   protected void onRestart() {
     super.onRestart();
-    litener = true;
-    connection.getExecutorService().execute(litenerThread);
+
+        litener = true;
+        connection.getExecutorService().execute(litenerThread);
   }
 
   private String getSelectedMovie(ArrayList<MovieData> items, int id) {
