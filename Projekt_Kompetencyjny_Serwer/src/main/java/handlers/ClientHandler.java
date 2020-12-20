@@ -15,7 +15,7 @@ public class ClientHandler implements Runnable {
   private PrintWriter out;
   private BufferedReader in;
   private BlockingQueue<Message> messageQueue;
-  private Vector<Message> commonList;
+  private Vector<Message> commonList = null;
   private String username = null;
   private String connectedUser = null;
 

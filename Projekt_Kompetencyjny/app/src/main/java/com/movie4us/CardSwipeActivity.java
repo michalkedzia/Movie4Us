@@ -29,6 +29,7 @@ public class CardSwipeActivity extends AppCompatActivity {
   private boolean litener = true;
   Connection connection;
   Runnable litenerThread;
+  boolean cancelMatch = true;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -111,7 +112,7 @@ public class CardSwipeActivity extends AppCompatActivity {
               e.printStackTrace();
             }
             message = gson.fromJson(s, Message.class);
-
+            System.out.println("***** " + message.getAction() + " " + cancelMatch);
             switch (message.getAction()) {
               case "category":
                 {
@@ -127,6 +128,7 @@ public class CardSwipeActivity extends AppCompatActivity {
               case "match":
                 {
                   System.out.println("***************** MATCH !!!!!!!!!!!!!!!!!!!!!");
+                  cancelMatch = false;
                   Intent matach = new Intent(getApplicationContext(), Match.class);
                   matach.putExtra(
                       "movie", getSelectedMovie(adapter.getItems(), message.getMovieId()));
@@ -136,8 +138,12 @@ public class CardSwipeActivity extends AppCompatActivity {
                 }
               case "matchStop":
                 {
-                  //                  litener = false;
-                    // TODO opracowanie co dalej po matchu u obu klinetów
+                  System.out.println("MATCH STOP !!!!!!!!!!!!!!!!" + cancelMatch);
+                  litener = false;
+                  if (!message.getUsername().equals(connection.getUsername())) {
+                    finish();
+                  }
+                  // TODO opracowanie co dalej po matchu u obu klinetów
                   break;
                 }
             }
@@ -164,21 +170,22 @@ public class CardSwipeActivity extends AppCompatActivity {
   @Override
   protected void onPause() {
     super.onPause();
-    System.out.println("onPause()  CARD SWIE @@@@@");
-    //    connection
-    //        .getExecutorService()
-    //        .execute(
-    //            () -> {
-    //              message.setUsername(connection.getUsername());
-    //              message.setAction("matchStop");
-    //              connection.send(gson.toJson(message));
-    //            });
+    if(cancelMatch){
+            connection
+                .getExecutorService()
+                .execute(
+                    () -> {
+                      message.setUsername(connection.getUsername());
+                      message.setAction("matchStop");
+                      connection.send(gson.toJson(message));
+                    });
+    }
   }
 
   @Override
   protected void onRestart() {
     super.onRestart();
-
+        cancelMatch=true;
         litener = true;
         connection.getExecutorService().execute(litenerThread);
   }

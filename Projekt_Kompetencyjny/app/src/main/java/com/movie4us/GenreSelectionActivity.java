@@ -65,7 +65,7 @@ public class GenreSelectionActivity extends AppCompatActivity {
             try {
               String s = connection.getIn().readLine();
               message = gson.fromJson(s, Message.class);
-
+              System.out.println("*********** "+message.getAction());
               switch (message.getAction()) {
                 case "selectedGenres":
                   {
@@ -74,7 +74,6 @@ public class GenreSelectionActivity extends AppCompatActivity {
                     System.out.println("genres selected");
                     Intent intent = new Intent(getApplicationContext(), CardSwipeActivity.class);
                     startActivity(intent);
-
                     break;
                   }
                 case "logout":
@@ -110,7 +109,7 @@ public class GenreSelectionActivity extends AppCompatActivity {
           }
         };
 
-    //    connection.getExecutorService().execute(listenerThread);
+        connection.getExecutorService().execute(listenerThread);
 
     buttonCategories.setOnClickListener(
         v ->
@@ -201,15 +200,19 @@ public class GenreSelectionActivity extends AppCompatActivity {
   protected void onResume() {
     super.onResume();
 
-    listener = true;
-    cancelGenresSelection = true;
-    connection.getExecutorService().execute(listenerThread);
-    System.err.println("onResume() ");
+//    listener = true;
+//    cancelGenresSelection = true;
+//    connection.getExecutorService().execute(listenerThread);
+//    System.err.println("onResume() ");
   }
 
   @Override
   protected void onRestart() {
     super.onRestart();
     System.err.println("onRestart()");
+    listener = true;
+    cancelGenresSelection = true;
+    connection.getExecutorService().execute(listenerThread);
+    System.err.println("onResume() ");
   }
 }

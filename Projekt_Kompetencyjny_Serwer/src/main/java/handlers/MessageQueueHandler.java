@@ -1,25 +1,24 @@
 package handlers;
 
+import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import api.data.PageMovieData;
 import com.google.gson.Gson;
 import log.*;
 import model.*;
-
-import javax.swing.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MessageQueueHandler implements Runnable {
   private ConcurrentMap<String, ClientHandler> clientsMap;
   private BlockingQueue<Message> messageQueue;
+  private Logger LOG = LoggerFactory.getLogger(MessageQueueHandler.class);
 
   public MessageQueueHandler(
       ConcurrentMap<String, ClientHandler> clientsMap, BlockingQueue<Message> messageQueue) {
@@ -75,7 +74,7 @@ public class MessageQueueHandler implements Runnable {
           }
         case "matchStop":
           {
-            echo(peek);
+            matchStop(peek);
             break;
           }
         case "cancelGenresSelection":
@@ -84,11 +83,21 @@ public class MessageQueueHandler implements Runnable {
             break;
           }
       }
-      MyLOG.myLOG(peek.toString());
+      LOG.info(peek.toString());
     }
   }
 
-  private void sendInfo(Message message, String action) {
+//  private String toGson(Message message) {
+//    Gson gson = new Gson();
+//    return gson.toJson(message ) + "\n";
+//  }
+
+//  private void send(PrintWriter printWriter, Message msg){
+//    printWriter.write(toGson(msg));
+//    printWriter.flush();
+//  }
+
+  private void sendInfo(Message message, String action){
     ClientHandler clientHandlerTo = clientsMap.get(message.getConnectedUser());
 
     Message acceptMessage = new Message();
@@ -255,7 +264,24 @@ public class MessageQueueHandler implements Runnable {
     clientHandler = clientsMap.get(clientHandler.getConnectedUser());
     msg.setAction("cancelGenresSelection");
     msg.setConnectedUser(message.getUsername());
-    clientHandler.getOut().write(gson.toJson(msg) +"\n");
+    clientHandler.getOut().write(gson.toJson(msg) + "\n");
+    clientHandler.getOut().flush();
+  }
+
+  private void matchStop(Message message) {
+    ClientHandler clientHandler = clientsMap.get(message.getUsername());
+    if (clientHandler.getCommonList() != null) {
+      clientHandler.getCommonList().clear();
+    }
+    Gson gson = new Gson();
+    clientHandler.getOut().write(gson.toJson(message) + "\n");
+    clientHandler.getOut().flush();
+
+    clientHandler = clientsMap.get(clientHandler.getConnectedUser());
+    if (clientHandler.getCommonList() != null) {
+      clientHandler.getCommonList().clear();
+    }
+    clientHandler.getOut().write(gson.toJson(message) + "\n");
     clientHandler.getOut().flush();
   }
 }
