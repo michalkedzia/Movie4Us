@@ -15,15 +15,13 @@
             android:usesCleartextTraffic="true">
         <activity android:name=".Match">
         </activity>
-        <activity android:name=".MovieListActivity">
-        </activity>
         <activity android:name=".MainActivity"/>
         <activity android:name=".GenreSelectionActivity"/>
         <activity
-                android:name=".SignUp"
+                android:name="loginRegister.SignUp"
                 android:theme="@style/Theme.Design.Light.NoActionBar"/>
         <activity
-                android:name=".Login"
+                android:name="loginRegister.Login"
                 android:theme="@style/Theme.Design.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

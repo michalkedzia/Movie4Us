@@ -2,11 +2,9 @@ package com.movie4us;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
-import android.widget.ImageView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -14,8 +12,8 @@ import com.google.gson.Gson;
 import com.yuyakaido.android.cardstackview.*;
 import data.MovieData;
 import data.PageMovieData;
+import model.Message;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -61,7 +59,6 @@ public class CardSwipeActivity extends AppCompatActivity {
                   message.setAction("selectedMovie");
                   message.setUsername(connection.getUsername());
                   message.setMovieId(adapter.getItems().get(manager.getTopPosition() - 1).id);
-                  System.out.println(adapter.getItems().get(manager.getTopPosition() - 1).id);
                   connection
                       .getExecutorService()
                       .execute(() -> connection.send(gson.toJson(message)));
@@ -112,7 +109,6 @@ public class CardSwipeActivity extends AppCompatActivity {
               e.printStackTrace();
             }
             message = gson.fromJson(s, Message.class);
-            System.out.println("***** " + message.getAction() + " " + cancelMatch);
             switch (message.getAction()) {
               case "category":
                 {
@@ -127,7 +123,6 @@ public class CardSwipeActivity extends AppCompatActivity {
                 }
               case "match":
                 {
-                  System.out.println("***************** MATCH !!!!!!!!!!!!!!!!!!!!!");
                   cancelMatch = false;
                   Intent matach = new Intent(getApplicationContext(), Match.class);
                   matach.putExtra(
@@ -138,12 +133,10 @@ public class CardSwipeActivity extends AppCompatActivity {
                 }
               case "matchStop":
                 {
-                  System.out.println("MATCH STOP !!!!!!!!!!!!!!!!" + cancelMatch);
                   litener = false;
                   if (!message.getUsername().equals(connection.getUsername())) {
                     finish();
                   }
-                  // TODO opracowanie co dalej po matchu u obu klinetów
                   break;
                 }
             }
@@ -170,24 +163,24 @@ public class CardSwipeActivity extends AppCompatActivity {
   @Override
   protected void onPause() {
     super.onPause();
-    if(cancelMatch){
-            connection
-                .getExecutorService()
-                .execute(
-                    () -> {
-                      message.setUsername(connection.getUsername());
-                      message.setAction("matchStop");
-                      connection.send(gson.toJson(message));
-                    });
+    if (cancelMatch) {
+      connection
+          .getExecutorService()
+          .execute(
+              () -> {
+                message.setUsername(connection.getUsername());
+                message.setAction("matchStop");
+                connection.send(gson.toJson(message));
+              });
     }
   }
 
   @Override
   protected void onRestart() {
     super.onRestart();
-        cancelMatch=true;
-        litener = true;
-        connection.getExecutorService().execute(litenerThread);
+    cancelMatch = true;
+    litener = true;
+    connection.getExecutorService().execute(litenerThread);
   }
 
   private String getSelectedMovie(ArrayList<MovieData> items, int id) {

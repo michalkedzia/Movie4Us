@@ -1,4 +1,4 @@
-package com.movie4us;
+package dialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

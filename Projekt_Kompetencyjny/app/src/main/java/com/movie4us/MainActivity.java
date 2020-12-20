@@ -1,6 +1,7 @@
 package com.movie4us;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -9,10 +10,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
+import dialog.AcceptDialog;
+import loginRegister.Login;
+import model.Message;
+
 import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
@@ -90,41 +94,29 @@ public class MainActivity extends AppCompatActivity {
                       dialog.setIntent(intent);
                       dialog.show(getSupportFragmentManager(), "info_dialog");
                     } else {
-                      System.out.println(message.toString());
                       Intent intent =
                           new Intent(getApplicationContext(), GenreSelectionActivity.class);
                       startActivity(intent);
-
                     }
-                    //                    System.out.println(message.toString());
-                    //                    Intent intent = new Intent(getApplicationContext(),
-                    // GenreSelectionActivity.class);
-                    //                    startActivity(intent);
-                    //                    System.out.println("koniec watku");
                     break;
                   }
                 case "match":
                   {
-                    System.out.println("***************** MATCH !!!!!!!!!!!!!!!!!!!!!");
                     break;
                   }
                 case "echo":
                   {
-                    System.out.println("->>>>>>>> " + message.getAction());
                     break;
                   }
                 case "logout":
                   {
                     listener = false;
-                    System.out.println("logout server");
                     break;
                   }
               }
 
-              System.out.println("********************************"+s);
             } catch (IOException e) {
-
-              //              e.printStackTrace();
+              e.printStackTrace();
               return;
             }
           }
@@ -138,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
                 .getExecutorService()
                 .execute(
                     () -> {
-                      //message.setAction("connect");
+                      // message.setAction("connect");
                       message.setAction("accept");
                       message.setConnectedUser(
                           String.valueOf(textInputUsernameToConnect.getText()));
@@ -185,7 +177,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     connection.getExecutorService().shutdownNow();
-    System.out.println("logout koniec");
     Intent intent = new Intent(getApplicationContext(), Login.class);
     startActivity(intent);
     finish();

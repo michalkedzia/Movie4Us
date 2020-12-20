@@ -1,5 +1,12 @@
 package handlers;
 
+import api.data.PageMovieData;
+import com.google.gson.Gson;
+import model.DataMovies;
+import model.Message;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -8,12 +15,6 @@ import java.util.Vector;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
-import api.data.PageMovieData;
-import com.google.gson.Gson;
-import log.*;
-import model.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class MessageQueueHandler implements Runnable {
   private ConcurrentMap<String, ClientHandler> clientsMap;
@@ -87,26 +88,22 @@ public class MessageQueueHandler implements Runnable {
     }
   }
 
-//  private String toGson(Message message) {
-//    Gson gson = new Gson();
-//    return gson.toJson(message ) + "\n";
-//  }
+  private String toGson(Message message) {
+    Gson gson = new Gson();
+    return gson.toJson(message) + "\n";
+  }
 
-//  private void send(PrintWriter printWriter, Message msg){
-//    printWriter.write(toGson(msg));
-//    printWriter.flush();
-//  }
+  private void send(PrintWriter printWriter, Message msg) {
+    printWriter.write(toGson(msg));
+    printWriter.flush();
+  }
 
-  private void sendInfo(Message message, String action){
+  private void sendInfo(Message message, String action) {
     ClientHandler clientHandlerTo = clientsMap.get(message.getConnectedUser());
-
     Message acceptMessage = new Message();
     acceptMessage.setAction(action);
     acceptMessage.setConnectedUser(message.getUsername());
-    Gson gson = new Gson();
-
-    clientHandlerTo.getOut().write(gson.toJson(acceptMessage) + "\n");
-    clientHandlerTo.getOut().flush();
+    send(clientHandlerTo.getOut(), acceptMessage);
   }
 
   private void categorySelection(Message message) {
@@ -134,21 +131,15 @@ public class MessageQueueHandler implements Runnable {
   }
 
   private void sendMoviesToBothUsers(Message message, List<String> genres) {
-
-    // ** Dodatkowa wiadomosc od serwera do klienta- wybarnie kategorii
     Message genresSelection = new Message();
-    Gson gson = new Gson();
     genresSelection.setUsername(message.getUsername());
     genresSelection.setAction("selectedGenres");
     ClientHandler client = clientsMap.get(message.getUsername());
-    client.getOut().write(gson.toJson(genresSelection) + "\n");
-    client.getOut().flush();
+    send(client.getOut(), genresSelection);
 
     genresSelection.setUsername(client.getConnectedUser());
     client = clientsMap.get(client.getConnectedUser());
-    client.getOut().write(gson.toJson(genresSelection) + "\n");
-    client.getOut().flush();
-    // **
+    send(client.getOut(), genresSelection);
 
     DataMovies dataMovies = new DataMovies(genres);
     PageMovieData movies = dataMovies.getMovies();
@@ -156,14 +147,10 @@ public class MessageQueueHandler implements Runnable {
     message.setAction("category");
 
     ClientHandler clientHandler = clientsMap.get(message.getUsername());
-
-    clientHandler.getOut().write(gson.toJson(message) + "\n");
-    clientHandler.getOut().flush();
+    send(clientHandler.getOut(), message);
 
     clientHandler = clientsMap.get(clientHandler.getConnectedUser());
-
-    clientHandler.getOut().write(gson.toJson(message) + "\n");
-    clientHandler.getOut().flush();
+    send(clientHandler.getOut(), message);
   }
 
   // TODO nowy wyjatek do obsługi albo nie
@@ -185,18 +172,8 @@ public class MessageQueueHandler implements Runnable {
     messageTo.setConnectedUser(from);
     messageTo.setStatus("in");
 
-    //    Message message = new Message();
-    //    message.setAction("connect");
-    //    message.setUsername(to);
-    //    message.setConnectedUser(from);
-
-    Gson gson = new Gson();
-
-    clientHandlerFrom.getOut().write(gson.toJson(messageFrom) + "\n");
-    clientHandlerFrom.getOut().flush();
-
-    clientHandlerTo.getOut().write(gson.toJson(messageTo) + "\n");
-    clientHandlerTo.getOut().flush();
+    send(clientHandlerFrom.getOut(), messageFrom);
+    send(clientHandlerTo.getOut(), messageTo);
 
     Vector<Message> list = new Vector<>();
     clientHandlerFrom.setCommonList(list);
@@ -204,12 +181,7 @@ public class MessageQueueHandler implements Runnable {
   }
 
   private void moviematcher(Message message) {
-
     ClientHandler clientHandler = clientsMap.get(message.getUsername());
-    String connectedUser = clientHandler.getConnectedUser();
-
-    System.out.println("*******- > " + message.getUsername() + " select  " + message.getMovieId());
-
     if (clientHandler.getCommonList().stream()
         .anyMatch(
             m ->
@@ -218,27 +190,19 @@ public class MessageQueueHandler implements Runnable {
       Message match = new Message();
       match.setAction("match");
       match.setMovieId(message.getMovieId());
-      Gson gson = new Gson();
-
-      clientHandler.getOut().write(gson.toJson(match) + "\n");
-      clientHandler.getOut().flush();
+      send(clientHandler.getOut(), match);
 
       clientHandler = clientsMap.get(clientHandler.getConnectedUser());
-
-      clientHandler.getOut().write(gson.toJson(match) + "\n");
-      clientHandler.getOut().flush();
+      send(clientHandler.getOut(), match);
 
     } else {
       clientHandler.getCommonList().add(message);
-      System.out.println("nie znaleziono");
     }
   }
 
   private void echo(Message message) {
     ClientHandler clientHandler = clientsMap.get(message.getUsername());
-    Gson gson = new Gson();
-    clientHandler.getOut().write(gson.toJson(message) + "\n");
-    clientHandler.getOut().flush();
+    send(clientHandler.getOut(), message);
   }
 
   // TODO rozłaczenie z drugim klientem,usuwanie z listy etc.
@@ -255,17 +219,14 @@ public class MessageQueueHandler implements Runnable {
   private void cancelGenresSelection(Message message) {
     ClientHandler clientHandler = clientsMap.get(message.getUsername());
     Message msg = new Message();
-    Gson gson = new Gson();
     msg.setAction("stop");
     msg.setConnectedUser(clientHandler.getConnectedUser());
-    clientHandler.getOut().write(gson.toJson(msg) + "\n");
-    clientHandler.getOut().flush();
+    send(clientHandler.getOut(), msg);
 
     clientHandler = clientsMap.get(clientHandler.getConnectedUser());
     msg.setAction("cancelGenresSelection");
     msg.setConnectedUser(message.getUsername());
-    clientHandler.getOut().write(gson.toJson(msg) + "\n");
-    clientHandler.getOut().flush();
+    send(clientHandler.getOut(), msg);
   }
 
   private void matchStop(Message message) {
@@ -273,15 +234,12 @@ public class MessageQueueHandler implements Runnable {
     if (clientHandler.getCommonList() != null) {
       clientHandler.getCommonList().clear();
     }
-    Gson gson = new Gson();
-    clientHandler.getOut().write(gson.toJson(message) + "\n");
-    clientHandler.getOut().flush();
+    send(clientHandler.getOut(), message);
 
     clientHandler = clientsMap.get(clientHandler.getConnectedUser());
     if (clientHandler.getCommonList() != null) {
       clientHandler.getCommonList().clear();
     }
-    clientHandler.getOut().write(gson.toJson(message) + "\n");
-    clientHandler.getOut().flush();
+    send(clientHandler.getOut(), message);
   }
 }

@@ -1,4 +1,4 @@
-package com.movie4us;
+package model;
 
 import data.PageMovieData;
 

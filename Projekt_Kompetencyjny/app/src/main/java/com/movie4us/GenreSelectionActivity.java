@@ -13,6 +13,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import com.google.gson.Gson;
+import dialog.InfoDialog;
+import loginRegister.Login;
+import model.Message;
 
 import java.io.IOException;
 
@@ -60,18 +63,15 @@ public class GenreSelectionActivity extends AppCompatActivity {
 
     listenerThread =
         () -> {
-          System.out.println("listenerThread - genreActivity start !!!!!");
           while (listener) {
             try {
               String s = connection.getIn().readLine();
               message = gson.fromJson(s, Message.class);
-              System.out.println("*********** "+message.getAction());
               switch (message.getAction()) {
                 case "selectedGenres":
                   {
                     listener = false;
                     cancelGenresSelection = false;
-                    System.out.println("genres selected");
                     Intent intent = new Intent(getApplicationContext(), CardSwipeActivity.class);
                     startActivity(intent);
                     break;
@@ -80,7 +80,6 @@ public class GenreSelectionActivity extends AppCompatActivity {
                   {
                     listener = false;
                     cancelGenresSelection = false;
-                    System.out.println("logout server");
                     break;
                   }
                 case "cancelGenresSelection":
@@ -96,7 +95,6 @@ public class GenreSelectionActivity extends AppCompatActivity {
                   }
                 case "stop":
                   {
-                    System.out.println("************** GENRE SELECTED ACTIVITY    stop");
                     cancelGenresSelection = false;
                     listener = false;
                     break;
@@ -109,7 +107,7 @@ public class GenreSelectionActivity extends AppCompatActivity {
           }
         };
 
-        connection.getExecutorService().execute(listenerThread);
+    connection.getExecutorService().execute(listenerThread);
 
     buttonCategories.setOnClickListener(
         v ->
@@ -155,7 +153,7 @@ public class GenreSelectionActivity extends AppCompatActivity {
     }
 
     connection.getExecutorService().shutdownNow();
-    System.out.println("logout koniec");
+
     Intent intent = new Intent(getApplicationContext(), Login.class);
     startActivity(intent);
     finish();
@@ -175,44 +173,34 @@ public class GenreSelectionActivity extends AppCompatActivity {
                 connection.send(gson.toJson(msg));
               });
     }
-    System.err.println("onPause()");
   }
 
   @Override
   protected void onStart() {
     super.onStart();
-    System.err.println("onStart()");
   }
 
   @Override
   protected void onStop() {
     super.onStop();
-    System.err.println("onStop()");
   }
 
   @Override
   protected void onDestroy() {
     super.onDestroy();
-    System.err.println("onDestroy()");
   }
 
   @Override
   protected void onResume() {
     super.onResume();
-
-//    listener = true;
-//    cancelGenresSelection = true;
-//    connection.getExecutorService().execute(listenerThread);
-//    System.err.println("onResume() ");
   }
 
   @Override
   protected void onRestart() {
     super.onRestart();
-    System.err.println("onRestart()");
+
     listener = true;
     cancelGenresSelection = true;
     connection.getExecutorService().execute(listenerThread);
-    System.err.println("onResume() ");
   }
 }

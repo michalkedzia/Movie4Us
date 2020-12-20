@@ -1,14 +1,18 @@
-package com.movie4us;
+package loginRegister;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
-import android.os.Bundle;
 import com.google.android.material.textfield.TextInputEditText;
+import com.movie4us.Connection;
+import com.movie4us.MainActivity;
+import com.movie4us.R;
 import com.vishnusivadas.advanced_httpurlconnection.PutData;
 import config.Configuration;
+
 import java.io.IOException;
 
 public class Login extends AppCompatActivity {

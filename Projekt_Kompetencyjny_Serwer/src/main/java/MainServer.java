@@ -1,20 +1,16 @@
 import com.google.gson.Gson;
+import handlers.ClientHandler;
+import handlers.MessageQueueHandler;
+import log.MyLOG;
+import model.Message;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Arrays;
 import java.util.concurrent.*;
-
-import model.*;
-import handlers.*;
-import log.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class MainServer {
   public static void main(String[] args) throws IOException {
@@ -23,11 +19,9 @@ public class MainServer {
     Gson gson = new Gson();
     Message message;
     ConcurrentMap<String, ClientHandler> clientsMap = new ConcurrentHashMap<>();
-
-    //        List<ClientHandler> clientHandlerList = new CopyOnWriteArrayList<>();
     BlockingQueue<Message> messageQueue = new LinkedBlockingDeque<>();
     executorService.execute(new MessageQueueHandler(clientsMap, messageQueue));
-    System.out.println("server start");
+    System.out.println("************--- SERVER START ---************");
     while (true) {
       Socket socket = serverSocket.accept();
       System.out.println(socket.toString());

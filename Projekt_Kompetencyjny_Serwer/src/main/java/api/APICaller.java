@@ -1,9 +1,7 @@
 package api;
 
 import api.data.MovieWatchProviderData;
-import api.data.PageMovieData;
 import api.utils.CallType;
-import api.utils.FilterType;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import exceptions.APIException;
@@ -85,8 +83,7 @@ public class APICaller {
     } catch (APIException.WrongMovieIdException e) {
       e.printStackTrace();
     }
-    //System.out.println(stringUrl);
-
+    // System.out.println(stringUrl);
 
     APICaller apiCaller = null;
     try {

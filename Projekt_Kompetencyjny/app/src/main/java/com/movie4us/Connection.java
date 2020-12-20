@@ -2,6 +2,7 @@ package com.movie4us;
 
 import com.google.gson.Gson;
 import config.Configuration;
+import model.Message;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,7 +14,6 @@ import java.util.concurrent.Executors;
 
 public class Connection {
   private static Connection connection = null;
-
 
   private Connection() {}
 
