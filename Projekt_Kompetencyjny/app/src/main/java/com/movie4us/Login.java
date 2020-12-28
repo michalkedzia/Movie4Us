@@ -76,9 +76,11 @@ public class Login extends AppCompatActivity {
                                 if (putData.onComplete()) {
                                     String result = putData.getResult();
                                     if (result.equals("Login Success")) {
+                                        ///////////////TODO: Dodane
                                         buttonLogin.setBackgroundResource(R.drawable.buttonshapeaccept);
                                         buttonLogin.setText("Login Success");
                                         buttonLogin.setTextSize(16);
+                                        ///////////////
                                         String text = ((EditText) findViewById(R.id.username)).getText().toString();
                                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                         Connection connection = Connection.getConnection();
@@ -104,9 +106,11 @@ public class Login extends AppCompatActivity {
                     });
                 } else {
 //                    Toast.makeText(getApplicationContext(), "All fields required", Toast.LENGTH_SHORT).show();
+                    //////////////TODO: Dodane
                     buttonLogin.setBackgroundResource(R.drawable.buttonshapedecline);
                     buttonLogin.setText("Login Failed! Try again");
                     buttonLogin.setTextSize(16);
+                    /////////////
                 }
             }
         });

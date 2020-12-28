@@ -78,9 +78,11 @@ public class SignUp extends AppCompatActivity {
                                             if (putData.onComplete()) {
                                                 String result = putData.getResult();
                                                 if (result.equals("Sign Up Success")) {
+                                                    ////////TODO: Dodane
                                                     buttonSignUp.setBackgroundResource(R.drawable.buttonshapeaccept);
                                                     buttonSignUp.setText("Sign Up Success");
                                                     buttonSignUp.setTextSize(16);
+                                                    ////////
                                                     Intent intent = new Intent(getApplicationContext(), Login.class);
                                                     startActivity(intent);
                                                     finish();
@@ -95,9 +97,11 @@ public class SignUp extends AppCompatActivity {
                     } else {
 //                        Toast.makeText(getApplicationContext(), "All fields required", Toast.LENGTH_SHORT)
 //                                .show();
+                        //////////////TODO: Dodane
                         buttonSignUp.setBackgroundResource(R.drawable.buttonshapedecline);
                         buttonSignUp.setText("Register Failed! Try again");
                         buttonSignUp.setTextSize(16);
+                        //////////////
                     }
                 });
     }
