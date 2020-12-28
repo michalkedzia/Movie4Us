@@ -2,6 +2,8 @@ package model;
 
 import data.PageMovieData;
 
+import java.util.List;
+
 public class Message {
   private String username;
   private String connectedUser;
@@ -10,6 +12,15 @@ public class Message {
   private String selectedCategory;
   private PageMovieData movies;
   private int movieId;
+  private List<String> friendsList;
+
+  public List<String> getFriendsList() {
+    return friendsList;
+  }
+
+  public void setFriendsList(List<String> friendsList) {
+    this.friendsList = friendsList;
+  }
 
   public String getUsername() {
     return username;
@@ -34,9 +45,6 @@ public class Message {
         + '\''
         + ", action='"
         + action
-        + '\''
-        + ", status='"
-        + status
         + '\''
         + ", selectedCategory='"
         + selectedCategory

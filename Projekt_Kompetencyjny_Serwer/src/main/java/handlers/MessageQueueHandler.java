@@ -2,16 +2,14 @@ package handlers;
 
 import api.data.PageMovieData;
 import com.google.gson.Gson;
+import db.DBQueries;
 import model.DataMovies;
 import model.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.PrintWriter;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Vector;
+import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
@@ -50,7 +48,9 @@ public class MessageQueueHandler implements Runnable {
           }
         case "connect":
           {
-            connectTwoUser(peek.getUsername(), peek.getConnectedUser());
+            if (checkIfUserIsLoggedIn(peek.getConnectedUser())) {
+              connectTwoUser(peek.getUsername(), peek.getConnectedUser());
+            }
             break;
           }
         case "category":
@@ -83,6 +83,11 @@ public class MessageQueueHandler implements Runnable {
             cancelGenresSelection(peek);
             break;
           }
+        case "getFriendsList":
+          {
+            getFriendsList(peek);
+            break;
+          }
       }
       LOG.info(peek.toString());
     }
@@ -91,6 +96,14 @@ public class MessageQueueHandler implements Runnable {
   private String toGson(Message message) {
     Gson gson = new Gson();
     return gson.toJson(message) + "\n";
+  }
+
+  private boolean addFriendToDataBase(String username, String friendName) {
+    List<String> allUsers = DBQueries.getAllUsers();
+    if (DBQueries.getFriendsList(username).contains(friendName)) return false;
+    if (!allUsers.contains(friendName)) return false;
+    DBQueries.insertFriend(friendName, username);
+    return true;
   }
 
   private void send(PrintWriter printWriter, Message msg) {
@@ -178,6 +191,7 @@ public class MessageQueueHandler implements Runnable {
     Vector<Message> list = new Vector<>();
     clientHandlerFrom.setCommonList(list);
     clientHandlerTo.setCommonList(list);
+    System.out.println("************** " + addFriendToDataBase(to, from));
   }
 
   private void moviematcher(Message message) {
@@ -229,6 +243,18 @@ public class MessageQueueHandler implements Runnable {
     send(clientHandler.getOut(), msg);
   }
 
+  private void getFriendsList(Message message) {
+    ClientHandler clientHandler = clientsMap.get(message.getUsername());
+    List<String> friendsList = DBQueries.getFriendsList(message.getUsername());
+    Set<String> strings = clientsMap.keySet();
+    List<String> list = new LinkedList<>();
+    for (String s : friendsList) {
+      if (strings.contains(s)) list.add(s);
+    }
+    message.setFriendsList(list);
+    send(clientHandler.getOut(), message);
+  }
+
   private void matchStop(Message message) {
     ClientHandler clientHandler = clientsMap.get(message.getUsername());
     if (clientHandler.getCommonList() != null) {
@@ -241,5 +267,9 @@ public class MessageQueueHandler implements Runnable {
       clientHandler.getCommonList().clear();
     }
     send(clientHandler.getOut(), message);
+  }
+
+  private boolean checkIfUserIsLoggedIn(String username) {
+    return clientsMap.containsKey(username);
   }
 }

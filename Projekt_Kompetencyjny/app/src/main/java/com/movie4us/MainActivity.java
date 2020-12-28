@@ -5,9 +5,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -18,6 +16,8 @@ import loginRegister.Login;
 import model.Message;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -45,6 +45,18 @@ public class MainActivity extends AppCompatActivity {
     setSupportActionBar(toolbar);
     connection = Connection.getConnection();
     listener = true;
+
+    message.setUsername(connection.getUsername());
+    message.setAction("getFriendsList");
+    connection.getExecutorService().execute(() -> connection.send(gson.toJson(message)));
+
+    ListView listView = findViewById(R.id.firendsList);
+    List<String> firends = new ArrayList<>();
+    ArrayAdapter arrayAdapter =
+        new ArrayAdapter(this, android.R.layout.simple_list_item_1, firends);
+    listView.setAdapter(arrayAdapter);
+    listView.setOnItemClickListener(
+        (parent, view, position, id) -> textInputUsernameToConnect.setText(firends.get(position)));
 
     TextView logout = findViewById(R.id.logout);
     logout.setOnClickListener(
@@ -113,6 +125,19 @@ public class MainActivity extends AppCompatActivity {
                     listener = false;
                     break;
                   }
+                case "getFriendsList":
+                  {
+                    runOnUiThread(
+                        () -> {
+                          for (String frnd : message.getFriendsList()) {
+                            if (!firends.contains(frnd)) {
+                              firends.add(frnd);
+                            }
+                          }
+                          arrayAdapter.notifyDataSetChanged();
+                        });
+                    break;
+                  }
               }
 
             } catch (IOException e) {
@@ -154,6 +179,9 @@ public class MainActivity extends AppCompatActivity {
   protected void onRestart() {
     super.onRestart();
     listener = true;
+    message.setUsername(connection.getUsername());
+    message.setAction("getFriendsList");
+    connection.getExecutorService().execute(() -> connection.send(gson.toJson(message)));
     connection.getExecutorService().execute(listenerThread);
   }
 
