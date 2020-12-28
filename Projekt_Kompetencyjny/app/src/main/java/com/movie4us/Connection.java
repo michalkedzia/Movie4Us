@@ -36,20 +36,20 @@ public class Connection {
     message = new Message();
     gson = new Gson();
     executorService.execute(
-        () -> {
-          try {
-            socket = new Socket("192.168.8.132", 5000);
-            out = new PrintWriter(socket.getOutputStream(), true);
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-          } catch (IOException e) {
-            e.printStackTrace();
-          }
+            () -> {
+              try {
+                socket = new Socket("192.168.1.32", 5000);
+                out = new PrintWriter(socket.getOutputStream(), true);
+                in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+              } catch (IOException e) {
+                e.printStackTrace();
+              }
 
-          message.setAction("login");
-          message.setUsername(username);
-          out.write(gson.toJson(message) + "\n");
-          out.flush();
-        });
+              message.setAction("login");
+              message.setUsername(username);
+              out.write(gson.toJson(message) + "\n");
+              out.flush();
+            });
   }
 
   public synchronized void send(String message) {
