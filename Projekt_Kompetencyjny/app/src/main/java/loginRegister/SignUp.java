@@ -3,9 +3,7 @@ package loginRegister;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.View;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,7 +20,6 @@ public class SignUp extends AppCompatActivity {
       textInputEditTextEmail;
   Button buttonSignUp;
   TextView textViewLogin;
-  ProgressBar progressBar;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +32,6 @@ public class SignUp extends AppCompatActivity {
     textInputEditTextUsername = findViewById(R.id.username);
     buttonSignUp = findViewById(R.id.buttonSignUp);
     textViewLogin = findViewById(R.id.loginText);
-    progressBar = findViewById(R.id.progress);
 
     textViewLogin.setOnClickListener(
         v -> {
@@ -56,7 +52,6 @@ public class SignUp extends AppCompatActivity {
               && !username.equals("")
               && !email.equals("")
               && !password.equals("")) {
-            progressBar.setVisibility(View.VISIBLE);
 
             Handler handler = new Handler();
             handler.post(
@@ -84,9 +79,11 @@ public class SignUp extends AppCompatActivity {
                             data);
                     if (putData.startPut()) {
                       if (putData.onComplete()) {
-                        progressBar.setVisibility(View.GONE);
                         String result = putData.getResult();
                         if (result.equals("Sign Up Success")) {
+                          buttonSignUp.setBackgroundResource(R.drawable.buttonshapeaccept);
+                          buttonSignUp.setText("Sign Up Success");
+                          buttonSignUp.setTextSize(16);
                           Intent intent = new Intent(getApplicationContext(), Login.class);
                           startActivity(intent);
                           finish();
@@ -99,8 +96,12 @@ public class SignUp extends AppCompatActivity {
                   }
                 });
           } else {
-            Toast.makeText(getApplicationContext(), "All fields required", Toast.LENGTH_SHORT)
-                .show();
+            //            Toast.makeText(getApplicationContext(), "All fields required",
+            // Toast.LENGTH_SHORT)
+            //                .show();
+            buttonSignUp.setBackgroundResource(R.drawable.buttonshapedecline);
+            buttonSignUp.setText("Register Failed! Try again");
+            buttonSignUp.setTextSize(16);
           }
         });
   }

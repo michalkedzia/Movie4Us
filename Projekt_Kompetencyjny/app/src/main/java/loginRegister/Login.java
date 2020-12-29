@@ -4,7 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.textfield.TextInputEditText;
 import com.movie4us.Connection;
@@ -19,7 +22,6 @@ public class Login extends AppCompatActivity {
   TextInputEditText textInputEditTextUsername, textInputEditTextPassword;
   Button buttonLogin;
   TextView textViewSignUp;
-  ProgressBar progressBar;
   public static String LOGIN = "main.Login.LOGIN";
 
   @Override
@@ -28,7 +30,6 @@ public class Login extends AppCompatActivity {
     setContentView(R.layout.activity_login);
     textInputEditTextPassword = findViewById(R.id.password);
     textInputEditTextUsername = findViewById(R.id.username);
-    progressBar = findViewById(R.id.progress);
     buttonLogin = findViewById(R.id.buttonLogin);
     textViewSignUp = findViewById(R.id.signUpText);
 
@@ -53,7 +54,6 @@ public class Login extends AppCompatActivity {
             password = String.valueOf(textInputEditTextPassword.getText());
 
             if (!username.equals("") && !password.equals("")) {
-              progressBar.setVisibility(View.VISIBLE);
 
               // Start ProgressBar first (Set visibility VISIBLE)
               Handler handler = new Handler();
@@ -82,9 +82,11 @@ public class Login extends AppCompatActivity {
                               data);
                       if (putData.startPut()) {
                         if (putData.onComplete()) {
-                          progressBar.setVisibility(View.GONE);
                           String result = putData.getResult();
                           if (result.equals("Login Success")) {
+                            buttonLogin.setBackgroundResource(R.drawable.buttonshapeaccept);
+                            buttonLogin.setText("Login Success");
+                            buttonLogin.setTextSize(16);
                             String text =
                                 ((EditText) findViewById(R.id.username)).getText().toString();
                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
@@ -111,8 +113,12 @@ public class Login extends AppCompatActivity {
                     }
                   });
             } else {
-              Toast.makeText(getApplicationContext(), "All fields required", Toast.LENGTH_SHORT)
-                  .show();
+              //              Toast.makeText(getApplicationContext(), "All fields required",
+              // Toast.LENGTH_SHORT)
+              //                  .show();
+              buttonLogin.setBackgroundResource(R.drawable.buttonshapedecline);
+              buttonLogin.setText("Login Failed! Try again");
+              buttonLogin.setTextSize(16);
             }
           }
         });
