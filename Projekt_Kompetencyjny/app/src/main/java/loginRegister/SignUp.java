@@ -83,7 +83,7 @@ public class SignUp extends AppCompatActivity {
                         if (result.equals("Sign Up Success")) {
                           buttonSignUp.setBackgroundResource(R.drawable.buttonshapeaccept);
                           buttonSignUp.setText("Sign Up Success");
-                          buttonSignUp.setTextSize(16);
+                          buttonSignUp.setTextSize(20);
                           Intent intent = new Intent(getApplicationContext(), Login.class);
                           startActivity(intent);
                           finish();
@@ -100,8 +100,8 @@ public class SignUp extends AppCompatActivity {
             // Toast.LENGTH_SHORT)
             //                .show();
             buttonSignUp.setBackgroundResource(R.drawable.buttonshapedecline);
-            buttonSignUp.setText("Register Failed! Try again");
-            buttonSignUp.setTextSize(16);
+            buttonSignUp.setText("Sign up Failed! Try again");
+            buttonSignUp.setTextSize(20);
           }
         });
   }

@@ -8,19 +8,19 @@
     <string name="welcome">"Welcome !"</string>
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
-    <string name="login_failed">"Login failed"</string>
+    <string name="login_failed">"Sign in failed"</string>
     <string name="username">username</string>
     <string name="password">password</string>
     <string name="signuphere">signuphere</string>
-    <string name="login">login</string>
+    <string name="login">Sign in</string>
     <string name="signup">SignUp</string>
     <string name="fullname">fullname</string>
     <string name="email">email</string>
     <string name="Movie4Us">Movie4Us</string>
-    <string name="SignUp">Register</string>
+    <string name="SignUp">Sign up</string>
     <string name="choice">Choose category:</string>
     <string name="create_an_account"><u>Create an account</u></string>
-    <string name="already_have_an_account_login"><u>Already have an account ? Login</u></string>
+    <string name="already_have_an_account_login"><u>Already have an account? Sign in!</u></string>
 
 
     <string-array name="categoriesList">
