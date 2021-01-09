@@ -13,6 +13,15 @@ public class Message {
   private PageMovieData movies;
   private int movieId;
   private List<String> friendsList;
+  private String error;
+
+  public String getError() {
+    return error;
+  }
+
+  public void setError(String error) {
+    this.error = error;
+  }
 
   public List<String> getFriendsList() {
     return friendsList;
@@ -37,21 +46,21 @@ public class Message {
   @Override
   public String toString() {
     return "Message{"
-        + "username='"
-        + username
-        + '\''
-        + ", connectedUser='"
-        + connectedUser
-        + '\''
-        + ", action='"
-        + action
-        + '\''
-        + ", selectedCategory='"
-        + selectedCategory
-        + '\''
-        + ", movies="
-        + movies
-        + '}';
+            + "username='"
+            + username
+            + '\''
+            + ", connectedUser='"
+            + connectedUser
+            + '\''
+            + ", action='"
+            + action
+            + '\''
+            + ", selectedCategory='"
+            + selectedCategory
+            + '\''
+            + ", movies="
+            + movies
+            + '}';
   }
 
   public String getSelectedCategory() {
