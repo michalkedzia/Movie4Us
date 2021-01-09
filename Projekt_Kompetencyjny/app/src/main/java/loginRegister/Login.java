@@ -85,8 +85,8 @@ public class Login extends AppCompatActivity {
                           String result = putData.getResult();
                           if (result.equals("Login Success")) {
                             buttonLogin.setBackgroundResource(R.drawable.buttonshapeaccept);
-                            buttonLogin.setText("Login Success");
-                            buttonLogin.setTextSize(16);
+                            buttonLogin.setText("Sign in success");
+                            buttonLogin.setTextSize(20);
                             String text =
                                 ((EditText) findViewById(R.id.username)).getText().toString();
                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
@@ -117,8 +117,8 @@ public class Login extends AppCompatActivity {
               // Toast.LENGTH_SHORT)
               //                  .show();
               buttonLogin.setBackgroundResource(R.drawable.buttonshapedecline);
-              buttonLogin.setText("Login Failed! Try again");
-              buttonLogin.setTextSize(16);
+              buttonLogin.setText("Sign in failed! Try again");
+              buttonLogin.setTextSize(20);
             }
           }
         });

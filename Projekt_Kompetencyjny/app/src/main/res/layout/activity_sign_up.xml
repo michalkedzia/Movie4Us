@@ -18,16 +18,17 @@
                 android:id="@+id/textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/poppinsbold"
+                android:fontFamily="@font/roboto"
                 android:gravity="center"
                 android:text="@string/signup"
+                android:textStyle="bold"
                 android:textSize="35sp"
                 android:textColor="#2e74ff"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:targetApi="jelly_bean" app:fontFamily="serif" android:textStyle="bold"
+                tools:targetApi="jelly_bean"
                 android:textAllCaps="false"/>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -49,7 +50,8 @@
                     android:layout_height="wrap_content"
                     android:drawableEnd="@drawable/ic_name"
                     android:drawableRight="@drawable/ic_name"
-                    android:fontFamily="@font/poppinsmedium"
+                    android:fontFamily="@font/roboto"
+                    android:textStyle="bold"
                     tools:targetApi="jelly_bean"/>
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -71,7 +73,8 @@
                     android:layout_height="wrap_content"
                     android:drawableEnd="@drawable/ic_email"
                     android:drawableRight="@drawable/ic_email"
-                    android:fontFamily="@font/poppinsmedium"
+                    android:fontFamily="@font/roboto"
+                    android:textStyle="bold"
                     tools:targetApi="jelly_bean"/>
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -93,7 +96,8 @@
                     android:layout_height="wrap_content"
                     android:drawableEnd="@drawable/ic_user"
                     android:drawableRight="@drawable/ic_user"
-                    android:fontFamily="@font/poppinsmedium"
+                    android:fontFamily="@font/roboto"
+                    android:textStyle="bold"
                     tools:targetApi="jelly_bean"/>
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -114,7 +118,8 @@
                     android:drawableEnd="@drawable/ic_pass"
                     android:inputType="textPassword"
                     android:drawableRight="@drawable/ic_pass"
-                    android:fontFamily="@font/poppinsmedium"
+                    android:fontFamily="@font/roboto"
+                    android:textStyle="bold"
                     tools:targetApi="jelly_bean"/>
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -132,27 +137,27 @@
                 style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="40dp"
                 android:text="@string/SignUp"
+                android:fontFamily="@font/roboto"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/progress"
                 android:background="@drawable/buttonshape"
                 android:shadowColor="#d9e7ff"
-                android:textColor="#d9e7ff" android:textSize="16sp"/>
-
+                android:textColor="#d9e7ff" android:textSize="21sp" app:layout_constraintHorizontal_bias="0.496"/>
         <TextView
                 android:id="@+id/loginText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
-                android:fontFamily="@font/poppinsmedium"
+                android:fontFamily="@font/roboto"
                 android:text="@string/already_have_an_account_login"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/buttonSignUp"
-                tools:targetApi="jelly_bean" android:textColor="#2e74ff" app:fontFamily="serif"
-                android:textStyle="bold" android:textSize="20sp"/>
+                tools:targetApi="jelly_bean" android:textColor="#2e74ff"
+                android:textStyle="italic" android:textSize="22sp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
     <ImageView
             android:layout_width="78dp"
