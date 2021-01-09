@@ -2,6 +2,7 @@ package com.movie4us;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Looper;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -138,6 +139,13 @@ public class MainActivity extends AppCompatActivity {
                         });
                     break;
                   }
+                case "error":
+                {
+                  runOnUiThread(()->{
+                    Toast.makeText(this, message.getError(), Toast.LENGTH_SHORT).show();
+                  });
+                  break;
+                }
               }
 
             } catch (IOException e) {

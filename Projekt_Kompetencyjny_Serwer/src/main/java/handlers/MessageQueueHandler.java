@@ -38,7 +38,11 @@ public class MessageQueueHandler implements Runnable {
       switch (peek.getAction()) {
         case "accept":
           {
-            sendInfo(peek, "accept");
+            if(checkIfUserIsLoggedIn(peek.getConnectedUser())){
+              sendInfo(peek, "accept");
+            }else {
+              sendError(peek,"The selected user is not available.");
+            }
             break;
           }
         case "reject":
@@ -271,5 +275,13 @@ public class MessageQueueHandler implements Runnable {
 
   private boolean checkIfUserIsLoggedIn(String username) {
     return clientsMap.containsKey(username);
+  }
+  private void sendError(Message message, String errorText){
+    Message msg = new Message();
+    msg.setAction("error");
+    msg.setError(errorText);
+    msg.setUsername(message.getUsername());
+    msg.setConnectedUser(message.getConnectedUser());
+    send(clientsMap.get(message.getUsername()).getOut(),msg);
   }
 }
