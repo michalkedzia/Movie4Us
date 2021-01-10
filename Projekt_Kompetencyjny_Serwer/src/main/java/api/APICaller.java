@@ -59,26 +59,25 @@ public class APICaller {
 
   public static void main(String[] args) {
     APIUrlBuilder apiUrlBuilder = new APIUrlBuilder();
-    //        String stringUrl = apiUrlBuilder.createBasicUrl(DISCOVER);
-    //        try {
-    //          apiUrlBuilder.addDiscoverFilter(FilterType.LANGUAGE, "english");
-    //          apiUrlBuilder.addDiscoverFilter(FilterType.SORT, "popularity.desc");
-    //          apiUrlBuilder.addDiscoverFilter(FilterType.PAGE, "1");
-    //          stringUrl = apiUrlBuilder.addDiscoverFilter(FilterType.GENRE, "Drama");
-    //          System.out.println(stringUrl);
-    //          stringUrl = apiUrlBuilder.addDiscoverFilter(FilterType.GENRE, "Action");
-    //          System.out.println(stringUrl);
-    ////          stringUrl = apiUrlBuilder.addDiscoverFilter(FilterType.YEAR, "2019");
-    //          System.out.println(stringUrl);
-    //        } catch (APIException.WrongCallTypeException |
-    // APIException.InvalidFilterValueException e)
-    //   {
-    //          e.printStackTrace();
-    //        }
+    //            String stringUrl = apiUrlBuilder.createBasicUrl(DISCOVER);
+    //            try {
+    //              apiUrlBuilder.addDiscoverFilter(FilterType.LANGUAGE, "english");
+    //              apiUrlBuilder.addDiscoverFilter(FilterType.SORT, "popularity.desc");
+    //              apiUrlBuilder.addDiscoverFilter(FilterType.PAGE, "1");
+    //              stringUrl = apiUrlBuilder.addDiscoverFilter(FilterType.GENRE, "Drama");
+    //              System.out.println(stringUrl);
+    //              stringUrl = apiUrlBuilder.addDiscoverFilter(FilterType.GENRE, "Action");
+    //              System.out.println(stringUrl);
+    //    //          stringUrl = apiUrlBuilder.addDiscoverFilter(FilterType.YEAR, "2019");
+    //              System.out.println(stringUrl);
+    //            } catch (APIException.WrongCallTypeException |
+    //     APIException.InvalidFilterValueException e)
+    //       {
+    //              e.printStackTrace();
+    //            }
 
     String stringUrl = apiUrlBuilder.createBasicUrl(PROVIDERS);
     try {
-
       stringUrl = apiUrlBuilder.addProviderMovieId(475557);
     } catch (APIException.WrongMovieIdException e) {
       e.printStackTrace();

@@ -10,6 +10,8 @@ public class MovieData {
   public String overview;
   public String release_date;
 
+  public MovieWatchProviderData watchProviderData;
+
   @Override
   public String toString() {
     return "MovieData{"
