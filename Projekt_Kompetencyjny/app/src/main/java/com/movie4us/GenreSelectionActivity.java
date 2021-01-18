@@ -111,9 +111,8 @@ public class GenreSelectionActivity extends AppCompatActivity {
                     listener = false;
                     InfoDialog infoDialog =
                         new InfoDialog(
-                            "Błąd", "Użytkownik po drugiej stronie wyszedł z wyboru kategori.");
+                            "Błąd", "Użytkownik po drugiej stronie wyszedł z wyboru kategori.",this);
                     infoDialog.show(getSupportFragmentManager(), "infoDialog");
-
                     break;
                   }
                 case "stop":

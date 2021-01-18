@@ -2,7 +2,6 @@ package com.movie4us;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Looper;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -34,25 +33,30 @@ public class MainActivity extends AppCompatActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-
     setContentView(R.layout.activity_main);
     textInputUsernameToConnect = findViewById(R.id.usernameToConnect);
     buttonConnect = findViewById(R.id.buttonConnect);
 
     gson = new Gson();
     message = new Message();
-
+    System.out.println(getRequestedOrientation());
     toolbar = findViewById(R.id.myToolBar);
     setSupportActionBar(toolbar);
     connection = Connection.getConnection();
     listener = true;
 
-    message.setUsername(connection.getUsername());
-    message.setAction("getFriendsList");
-    connection.getExecutorService().execute(() -> connection.send(gson.toJson(message)));
+    connection
+        .getExecutorService()
+        .execute(
+            () -> {
+              message.setUsername(connection.getUsername());
+              message.setAction("getFriendsList");
+              connection.send(gson.toJson(message));
+            });
 
     ListView listView = findViewById(R.id.firendsList);
     List<String> firends = new ArrayList<>();
+
     ArrayAdapter arrayAdapter =
         new ArrayAdapter(this, android.R.layout.simple_list_item_1, firends);
     listView.setAdapter(arrayAdapter);
@@ -140,12 +144,13 @@ public class MainActivity extends AppCompatActivity {
                     break;
                   }
                 case "error":
-                {
-                  runOnUiThread(()->{
-                    Toast.makeText(this, message.getError(), Toast.LENGTH_SHORT).show();
-                  });
-                  break;
-                }
+                  {
+                    runOnUiThread(
+                        () -> {
+                          Toast.makeText(this, message.getError(), Toast.LENGTH_SHORT).show();
+                        });
+                    break;
+                  }
               }
 
             } catch (IOException e) {
