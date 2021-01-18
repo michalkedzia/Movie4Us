@@ -3,7 +3,10 @@ package loginRegister;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -23,6 +26,7 @@ public class Login extends AppCompatActivity {
   Button buttonLogin;
   TextView textViewSignUp;
   public static String LOGIN = "main.Login.LOGIN";
+
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {

@@ -6,6 +6,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,6 +30,7 @@ public class GenreSelectionActivity extends AppCompatActivity {
   boolean cancelGenresSelection;
   private Connection connection;
   private Runnable listenerThread;
+  Animation alpha;
 
   private ArrayList<CategoryItem> mCategoryList;
   private CategoryAdapter mAdapter;
@@ -40,6 +43,7 @@ public class GenreSelectionActivity extends AppCompatActivity {
     setContentView(R.layout.genre_selection);
     spinnerCategories = findViewById(R.id.spinnerCategories);
     buttonCategories = findViewById(R.id.buttonCategories);
+    alpha= AnimationUtils.loadAnimation(this,R.anim.alpha);
 
     mAdapter = new CategoryAdapter(this, mCategoryList);
     spinnerCategories.setAdapter(mAdapter);
@@ -138,6 +142,7 @@ public class GenreSelectionActivity extends AppCompatActivity {
                 .getExecutorService()
                 .execute(
                     () -> {
+                      v.startAnimation(alpha);
                       message.setAction("category");
                       message.setUsername(connection.getUsername());
                       //
