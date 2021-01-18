@@ -1,5 +1,5 @@
 package config;
 
 public class Configuration {
-  public static final String IP = "192.168.8.137";
+  public static final String IP = "169.254.250.43";
 }

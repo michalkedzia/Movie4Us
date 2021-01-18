@@ -4,11 +4,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
+
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+
 import android.os.Looper;
 import android.provider.ContactsContract;
 import android.view.*;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+
 import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -39,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-
     setContentView(R.layout.activity_main);
     textInputUsernameToConnect = findViewById(R.id.usernameToConnect);
     buttonConnect = findViewById(R.id.buttonConnect);
@@ -47,15 +52,20 @@ public class MainActivity extends AppCompatActivity {
 
     gson = new Gson();
     message = new Message();
-
+    System.out.println(getRequestedOrientation());
     toolbar = findViewById(R.id.myToolBar);
     setSupportActionBar(toolbar);
     connection = Connection.getConnection();
     listener = true;
 
-    message.setUsername(connection.getUsername());
-    message.setAction("getFriendsList");
-    connection.getExecutorService().execute(() -> connection.send(gson.toJson(message)));
+    connection
+        .getExecutorService()
+        .execute(
+            () -> {
+              message.setUsername(connection.getUsername());
+              message.setAction("getFriendsList");
+              connection.send(gson.toJson(message));
+            });
 
     ListView listView = findViewById(R.id.firendsList);
     List<String> firends = new ArrayList<>();
@@ -147,12 +157,13 @@ public class MainActivity extends AppCompatActivity {
                     break;
                   }
                 case "error":
-                {
-                  runOnUiThread(()->{
-                    Toast.makeText(this, message.getError(), Toast.LENGTH_SHORT).show();
-                  });
-                  break;
-                }
+                  {
+                    runOnUiThread(
+                        () -> {
+                          Toast.makeText(this, message.getError(), Toast.LENGTH_SHORT).show();
+                        });
+                    break;
+                  }
               }
 
             } catch (IOException e) {
