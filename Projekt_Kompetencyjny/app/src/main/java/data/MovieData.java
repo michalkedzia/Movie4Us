@@ -9,6 +9,7 @@ public class MovieData {
   public float vote_average;
   public String overview;
   public String release_date;
+  public MovieWatchProviderData watchProviderData;
 
   @Override
   public String toString() {
