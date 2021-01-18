@@ -7,22 +7,36 @@
         android:layout_height="match_parent"
         tools:context=".MainActivity" android:background="#d9e7ff">
 
+    <TextView
+            android:id="@+id/movie4Us"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:fontFamily="@font/brightons"
+            android:gravity="center"
+            android:text="@string/Movie4Us"
+            android:textColor="#2e74ff"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:targetApi="jelly_bean" android:background="#00F6F5F5" app:drawableTint="#05DF2626"
+    />
     <ImageView
             android:layout_width="78dp"
             android:layout_height="105dp" app:srcCompat="@drawable/logo" android:id="@+id/imageView4"
-            android:layout_marginBottom="32dp" app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="25dp" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="53dp" app:layout_constraintStart_toStartOf="parent"
             android:layout_marginLeft="166dp" android:layout_marginStart="166dp" android:layout_marginEnd="167dp"
             android:layout_marginRight="167dp" app:layout_constraintEnd_toEndOf="parent"/>
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="410dp"
-            android:layout_height="300dp"
+            android:layout_height="250dp"
             android:id="@+id/constraintLayout"
             app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintHorizontal_bias="1.0" android:layout_marginTop="85dp"
-            app:layout_constraintTop_toBottomOf="@+id/imageView4"
-    >
+            app:layout_constraintHorizontal_bias="1.0"
+            android:layout_marginTop="57dp" app:layout_constraintTop_toBottomOf="@+id/imageView4">
 
         <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="300dp"
@@ -39,6 +53,7 @@
                     android:layout_height="wrap_content"
                     android:hint="Type user to connect"
                     android:fontFamily="@font/roboto"
+                    android:gravity="center"
                     android:textStyle="bold"
                     android:id="@+id/usernameToConnect"/>
         </com.google.android.material.textfield.TextInputLayout>
@@ -53,12 +68,38 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginLeft="155dp" android:layout_marginStart="155dp" android:textSize="20sp"/>
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="408dp"
+                android:layout_height="40dp"
+                app:layout_constraintTop_toBottomOf="@+id/buttonConnect"
+                app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" app:layout_constraintVertical_bias="0.79"
+                app:layout_constraintHorizontal_bias="0.0">
+            <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content" app:srcCompat="@drawable/usericon" android:id="@+id/imageView2"
+                    android:layout_weight="1"/>
+            <TextView
+                    android:text="Active users"
+                    android:gravity="center"
+                    android:layout_width="200dp"
+                    android:textColor="#2e74ff"
+                    android:textStyle="bold"
+                    android:layout_height="40dp" android:id="@+id/textView4"
+                    android:textSize="25sp" app:fontFamily="@font/roboto"
+                    android:textAllCaps="false"
+            />
+            <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content" app:srcCompat="@drawable/usericon" android:id="@+id/imageView3"
+                    android:layout_weight="1"/>
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="92dp"
             android:layout_height="40dp" android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginLeft="59dp"
-            android:layout_marginStart="59dp" app:layout_constraintStart_toEndOf="@+id/imageView4"
+            android:layout_marginRight="16dp" app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginBottom="145dp" app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
             app:layout_constraintTop_toTopOf="parent" android:layout_marginTop="24dp">
 
@@ -85,13 +126,15 @@
                 android:layout_marginTop="5dp" tools:ignore="VectorDrawableCompat"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
     <ListView
-            android:layout_width="0dp"
+            android:layout_width="408dp"
             android:layout_height="0dp" android:layout_marginEnd="1dp"
             android:layout_marginRight="1dp" app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="1dp"
             android:layout_marginStart="1dp" android:layout_marginTop="1dp"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
-            app:layout_constraintBottom_toBottomOf="parent" android:id="@+id/firendsList"/>
+            app:layout_constraintBottom_toBottomOf="parent" android:id="@+id/firendsList"
+            app:layout_constraintVertical_bias="0.04000002"
+            android:background="#2e74ff"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

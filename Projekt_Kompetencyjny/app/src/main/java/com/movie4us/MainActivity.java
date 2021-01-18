@@ -1,13 +1,17 @@
 package com.movie4us;
 
+import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.os.Looper;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.provider.ContactsContract;
+import android.view.*;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.*;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import com.google.android.material.textfield.TextInputEditText;
@@ -30,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
   boolean listener;
   private Connection connection;
   private Runnable listenerThread;
+  Animation alpha;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     setContentView(R.layout.activity_main);
     textInputUsernameToConnect = findViewById(R.id.usernameToConnect);
     buttonConnect = findViewById(R.id.buttonConnect);
+    alpha=AnimationUtils.loadAnimation(this,R.anim.alpha);
 
     gson = new Gson();
     message = new Message();
@@ -53,9 +59,10 @@ public class MainActivity extends AppCompatActivity {
 
     ListView listView = findViewById(R.id.firendsList);
     List<String> firends = new ArrayList<>();
-    ArrayAdapter arrayAdapter =
-        new ArrayAdapter(this, android.R.layout.simple_list_item_1, firends);
-    listView.setAdapter(arrayAdapter);
+
+    UserAdapter userAdapter=new UserAdapter(this,firends);
+    listView.setAdapter(userAdapter);
+
     listView.setOnItemClickListener(
         (parent, view, position, id) -> textInputUsernameToConnect.setText(firends.get(position)));
 
@@ -135,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
                               firends.add(frnd);
                             }
                           }
-                          arrayAdapter.notifyDataSetChanged();
+                          userAdapter.notifyDataSetChanged();
                         });
                     break;
                   }
@@ -163,6 +170,7 @@ public class MainActivity extends AppCompatActivity {
                 .getExecutorService()
                 .execute(
                     () -> {
+                      v.startAnimation(alpha);
                       // message.setAction("connect");
                       message.setAction("accept");
                       message.setConnectedUser(
@@ -170,6 +178,48 @@ public class MainActivity extends AppCompatActivity {
                       message.setUsername(connection.getUsername());
                       connection.send(gson.toJson(message));
                     }));
+  }
+
+  class UserAdapter extends ArrayAdapter<String>
+  {
+    List<String> Friends;
+    UserAdapter(Context context,List<String> friends)
+    {
+      super(context,0,friends);
+      this.Friends=friends;
+    }
+
+    @NonNull
+    @Override
+    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+
+      ViewHolder viewHolder=null;
+
+      if(convertView==null)
+      {
+        convertView =
+                LayoutInflater.from(getContext()).inflate(R.layout.user_row, parent, false);
+        viewHolder=new ViewHolder(convertView);
+        convertView.setTag(viewHolder);
+      }
+      else
+      {
+        viewHolder=(ViewHolder)convertView.getTag();
+      }
+
+      viewHolder.user_name.setText(Friends.get(position));
+      return convertView;
+    }
+
+    class ViewHolder
+    {
+      TextView user_name;
+
+      ViewHolder(View view)
+      {
+        user_name=view.findViewById(R.id.friend_name);
+      }
+    }
   }
 
   @Override
