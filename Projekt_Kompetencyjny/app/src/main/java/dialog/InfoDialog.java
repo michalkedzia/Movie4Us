@@ -22,7 +22,14 @@ public class InfoDialog extends AppCompatDialogFragment {
   public Dialog onCreateDialog(Bundle savedInstanceState) {
 
     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-    builder.setTitle(title).setMessage(message).setNegativeButton("OK", (dialog, which) -> {this.genreSelectionActivity.finish();});
+    builder
+        .setTitle(title)
+        .setMessage(message)
+        .setNegativeButton(
+            "OK",
+            (dialog, which) -> {
+              this.genreSelectionActivity.finish();
+            });
     return builder.create();
   }
 }

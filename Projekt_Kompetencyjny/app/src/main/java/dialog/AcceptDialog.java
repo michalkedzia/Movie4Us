@@ -22,13 +22,10 @@ public class AcceptDialog extends AppCompatDialogFragment {
 
     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
     builder
-        .setTitle("Znaleziono użytkownika")
-        .setMessage(
-            "Czy chcesz zaakceptować połączenie od użytkownika '"
-                + message.getConnectedUser()
-                + "'")
+        .setTitle("User requested connection")
+        .setMessage("Do you want to connect with user: '" + message.getConnectedUser() + "'")
         .setNegativeButton(
-            "Odrzuć",
+            "Reject",
             new DialogInterface.OnClickListener() {
               @Override
               public void onClick(DialogInterface dialog, int which) {
@@ -43,7 +40,7 @@ public class AcceptDialog extends AppCompatDialogFragment {
               }
             })
         .setPositiveButton(
-            "Akceptuj",
+            "Accept",
             new DialogInterface.OnClickListener() {
               @Override
               public void onClick(DialogInterface dialog, int which) {
