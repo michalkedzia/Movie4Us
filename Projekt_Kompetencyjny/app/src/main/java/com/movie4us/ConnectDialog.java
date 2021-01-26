@@ -24,8 +24,8 @@ public class ConnectDialog extends AppCompatDialogFragment {
     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
     if (message.getAction().equals("connect")) {
       builder
-          .setTitle("Połączono")
-          .setMessage("Użytkownik '" + message.getConnectedUser() + "' zaakceptował zaproszenie.")
+          .setTitle("Connected")
+          .setMessage("User '" + message.getConnectedUser() + "' accepted your invite.")
           .setNegativeButton(
               "OK",
               new DialogInterface.OnClickListener() {
@@ -36,8 +36,8 @@ public class ConnectDialog extends AppCompatDialogFragment {
               });
     } else if (message.getAction().equals("reject")) {
       builder
-          .setTitle("Odrzucono")
-          .setMessage("Użytkownik '" + message.getConnectedUser() + "' odrzucił zaproszenie.")
+          .setTitle("Rejected")
+          .setMessage("User '" + message.getConnectedUser() + "' rejected your invite.")
           .setNegativeButton(
               "OK",
               new DialogInterface.OnClickListener() {

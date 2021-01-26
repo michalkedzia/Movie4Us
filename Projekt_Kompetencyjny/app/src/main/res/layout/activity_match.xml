@@ -23,7 +23,7 @@
                 android:id="@+id/textmatched"
                 android:layout_width="190dp"
                 android:layout_height="40dp"
-                android:fontFamily="@font/poppinsbold"
+                android:fontFamily="@font/roboto"
                 android:gravity="center"
                 android:text="MATCHED FILM"
                 android:textStyle="bold"
@@ -97,14 +97,15 @@
                 android:layout_height="wrap_content"
                 android:padding="25px"
                 android:textColor="@android:color/white"
-                android:textSize="17sp"/>
+                android:textSize="17sp"
+                android:fontFamily="@font/roboto"/>
 
-<!--        <ImageView-->
-<!--                android:layout_width="70dp"-->
-<!--                android:layout_height="70dp"-->
-<!--                android:id="@+id/ProviderImage"-->
-<!--                android:layout_marginLeft="25px"-->
-<!--                android:scaleType="centerCrop"/>-->
+        <!--        <ImageView-->
+        <!--                android:layout_width="70dp"-->
+        <!--                android:layout_height="70dp"-->
+        <!--                android:id="@+id/ProviderImage"-->
+        <!--                android:layout_marginLeft="25px"-->
+        <!--                android:scaleType="centerCrop"/>-->
 
         <HorizontalScrollView
                 android:layout_width="match_parent"
