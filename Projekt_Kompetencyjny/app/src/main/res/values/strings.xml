@@ -19,6 +19,8 @@
     <string name="Movie4Us">Movie4Us</string>
     <string name="SignUp">Sign up</string>
     <string name="choice">Choose category:</string>
+    <string name="create_an_account"><u>Create an account</u></string>
+    <string name="already_have_an_account_login"><u>Already have an account? Sign in!</u></string>
 
 
     <string-array name="categoriesList">
