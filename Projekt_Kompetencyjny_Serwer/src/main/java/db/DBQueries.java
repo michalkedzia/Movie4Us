@@ -5,7 +5,18 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Klasa CRUD do bazy danych
+ *
+ * @author MK
+ */
 public class DBQueries {
+  /**
+   * Zwraca listę znajomych danego użytkownika
+   *
+   * @param userName nazwa użytkownika dla którego chcemy pobrać liste znajomych
+   * @return lista znajomych danego użytkownika
+   */
   public static List<String> getFriendsList(String userName) {
     List<String> list = new ArrayList<>();
     try {
@@ -17,7 +28,6 @@ public class DBQueries {
           connection.prepareStatement("SELECT username FROM friends WHERE friendID = ?");
       preparedStatementUserID.setString(1, userName);
       ResultSet resultSet = preparedStatementUserID.executeQuery();
-      // TODO wyjatek jesli nie znajdziemy rekordu
       if (resultSet.next()) {
         preparedStatementUsername.setInt(1, resultSet.getInt("userid"));
         resultSet = preparedStatementUsername.executeQuery();
@@ -31,6 +41,11 @@ public class DBQueries {
     return list;
   }
 
+  /**
+   * Zwraca listę wszystkicj uzytkowników
+   *
+   * @return Lista wszystkich użytkowników zarejestrowanych
+   */
   public static List<String> getAllUsers() {
     List<String> list = new LinkedList<>();
     try {
@@ -48,6 +63,12 @@ public class DBQueries {
     return list;
   }
 
+  /**
+   * Dodaje użytkownika do listy znajomych
+   *
+   * @param userName nazwa użytkownika dla którego dodajemy znajomego
+   * @param friendName nazwa użytkownika którego chcemy dodać jako znajomego
+   */
   public static void insertFriend(String userName, String friendName) {
 
     try {

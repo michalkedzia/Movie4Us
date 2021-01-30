@@ -11,12 +11,9 @@ import org.junit.runner.RunWith;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.typeText;
-import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static org.hamcrest.Matchers.not;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -32,14 +29,31 @@ public class LoginTest {
   }
 
   @Test
-  public void testClickActionBarItem() {
+  public void shouldSignUp() {
     onView(withId(R.id.password)).perform(typeText("test"));
     onView(withId(R.id.username)).perform(typeText("test"));
+    onView(withId(R.id.buttonLogin)).check(matches(withText("SIGN IN")));
     Espresso.closeSoftKeyboard();
     onView(withId(R.id.buttonLogin)).perform(click());
-
-      onView(withId(R.id.usernameToConnect))
-              .perform(typeText("test"));
   }
 
+  @Test
+  public void shouldReturnSignUpFailedWithNoData() {
+    onView(withId(R.id.password)).perform(typeText(""));
+    onView(withId(R.id.username)).perform(typeText(""));
+    Espresso.closeSoftKeyboard();
+    onView(withId(R.id.buttonLogin)).perform(click());
+    onView(withId(R.id.buttonLogin))
+        .check(matches(withText("Sign in failed! Try again".toUpperCase())));
+  }
+
+  @Test
+  public void shouldReturnSignUpInWithIncorrectData() {
+    onView(withId(R.id.password)).perform(typeText("test"));
+    onView(withId(R.id.username)).perform(typeText(""));
+    Espresso.closeSoftKeyboard();
+    onView(withId(R.id.buttonLogin)).perform(click());
+    onView(withId(R.id.buttonLogin))
+        .check(matches(withText("Sign in failed! Try again".toUpperCase())));
+  }
 }

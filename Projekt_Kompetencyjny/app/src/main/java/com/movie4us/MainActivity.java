@@ -30,7 +30,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+/**
+ * Klasa umożliwiająca połączenie ze sobą dwóch klientów.
+ * Użytkownik ma możliwość wpisania nazwe użytkownika z którym chce się połączyć.
+ * Jeśli użytkownik nie istnieję lub nie jest zalogowany, zostanie wyświetlony odpowienik komunikat.
+ * Użytkownik ma również możliwość wyboru użytkownika z którym chce się połączyć z listy aktualnie zalogowanych klientów
+ * z którymi kiedyś się już łączył.
+ * @author MK
+ */
+ public class MainActivity extends AppCompatActivity {
 
   private Toolbar toolbar;
   private Button buttonConnect;
@@ -62,9 +70,16 @@ public class MainActivity extends AppCompatActivity {
         .getExecutorService()
         .execute(
             () -> {
-              message.setUsername(connection.getUsername());
-              message.setAction("getFriendsList");
-              connection.send(gson.toJson(message));
+              while (listener){
+                message.setUsername(connection.getUsername());
+                message.setAction("getFriendsList");
+                connection.send(gson.toJson(message));
+                try {
+                  Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                  e.printStackTrace();
+                }
+              }
             });
 
     ListView listView = findViewById(R.id.firendsList);
