@@ -12,15 +12,34 @@ import com.movie4us.R;
 import com.vishnusivadas.advanced_httpurlconnection.PutData;
 import config.Configuration;
 
+/**
+ * Klasa rejestracji użytkownika do aplikacji.
+ * Rejestracja w aplikacji jest możliwa po podaniu: nazwy uzytkownika, loginu, adresu email i hasła.
+ * Jeśli wszystkie dane są poprawne, uzytkownik rejestruję się w aplikacji.
+ * Po rejestracji ma możliwośc przejścia do panelu logowania za pomocą przycisku.
+ * @author MK
+ */
 public class SignUp extends AppCompatActivity {
-
+    /**
+     * Pola tekstowe umożliwiające użytkownikowi wpisanie pełnej nazwy, loginu, adresu email i hasła
+     */
   TextInputEditText textInputEditTextFullname,
       textInputEditTextUsername,
       textInputEditTextPassword,
       textInputEditTextEmail;
+    /**
+     * Przycisk rejestrujący użytkownika
+     */
   Button buttonSignUp;
+    /**
+     * Przycisk przechodzący do panelu logowania
+     */
   TextView textViewLogin;
 
+    /**
+     * Metoda tworzaca panel rejestracji i initializująca obsługę GUI
+     * @param savedInstanceState
+     */
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -96,9 +115,6 @@ public class SignUp extends AppCompatActivity {
                   }
                 });
           } else {
-            //            Toast.makeText(getApplicationContext(), "All fields required",
-            // Toast.LENGTH_SHORT)
-            //                .show();
             buttonSignUp.setBackgroundResource(R.drawable.buttonshapedecline);
             buttonSignUp.setText("Sign up Failed! Try again");
             buttonSignUp.setTextSize(20);

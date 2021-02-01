@@ -4,14 +4,25 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/** Klasa połaćzenia bazy danych MySQL. */
 public class DatabaseConnection {
 
+  /** Instancja bazyd danych. */
   private static DatabaseConnection instance;
+  /** Sesjca bazy dabych */
   private Connection connection;
+  /** Adres bazy dancyh */
   private String url = "jdbc:mysql://localhost:3306/movie4us";
+  /** Nazwa użytkownika bazy */
   private String username = "root";
+  /** Hasło do bazy danych */
   private String password = "";
 
+  /**
+   * Intializacja połączenia z bazą
+   *
+   * @throws SQLException
+   */
   private DatabaseConnection() throws SQLException {
     try {
       Class.forName("com.mysql.cj.jdbc.Driver");
@@ -21,10 +32,12 @@ public class DatabaseConnection {
     }
   }
 
+  /** @return connection do bazy danych */
   public Connection getConnection() {
     return connection;
   }
 
+  /** Zamykanie połączenia z bazą danych */
   public void close() {
     try {
       this.connection.close();

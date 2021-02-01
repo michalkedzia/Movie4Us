@@ -12,6 +12,9 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.*;
 
+/**
+ * Klasa serwera rozpoczynająca pracę serwera
+ */
 public class MainServer {
   public static void main(String[] args) throws IOException {
     ExecutorService executorService = Executors.newFixedThreadPool(10);

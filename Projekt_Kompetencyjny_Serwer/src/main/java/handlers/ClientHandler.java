@@ -11,15 +11,38 @@ import java.net.Socket;
 import java.util.Vector;
 import java.util.concurrent.BlockingQueue;
 
+/**
+ * Klasa przechowująca informację klienta i obsługująca połączenie z klientem. Odbiera żądania
+ * wysłania przez klienta, następnie umieszcza je w messageQueue.
+ */
 public class ClientHandler implements Runnable {
+  /** Socket przydzielony przez główna klasę serwera. */
   private Socket socket;
+  /** Strumien wyjścia danych danego klienta. */
   private PrintWriter out;
+  /** Strumień wejścia danego klienta. */
   private BufferedReader in;
+  /**
+   * Kolejka wiadomości globalana dla całego serwera. Przechowuję żądania wysłane przez wszystkich
+   * klientów.
+   */
   private BlockingQueue<Message> messageQueue;
+  /**
+   * Vector przechowujący Messages. Jest to vector wspólny dla danego użytkownika i użytkownka z nim
+   * połączonego. Vector przechowuje Messages wyłącznie z informacją o wybranym filmie przez dwóch
+   * użytkowników. Jest on initializowany przez serwer.
+   */
   private Vector<Message> commonList = null;
+  /** Nazwa użytkownika połączonego z serwerem. */
   private String username = null;
+  /** Nazwa użytkownika, który jest aktualnie połączony z danym klientem. */
   private String connectedUser = null;
 
+  /**
+   * Konstruktor klasy, parametry otrzymywane są od serwera.
+   *
+   * @param messageQueue globalna kolejka serwra
+   */
   public ClientHandler(
       Socket socket, PrintWriter out, BufferedReader in, BlockingQueue<Message> messageQueue) {
     this.socket = socket;
@@ -84,6 +107,10 @@ public class ClientHandler implements Runnable {
     this.connectedUser = connectedUser;
   }
 
+  /**
+   * Watek odbierający żądania od klienta i umieszczający je w kolejsce. Wątek kończy sie gdy,
+   * użytkownik wylogował się, lub został napotkany błąd, którego nie jest w stanie obsłużyć.
+   */
   @Override
   public void run() {
     String json = null;
