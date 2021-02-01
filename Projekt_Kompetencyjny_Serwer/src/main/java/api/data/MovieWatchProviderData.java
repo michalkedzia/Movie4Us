@@ -1,10 +1,17 @@
 package api.data;
 
 import java.util.ArrayList;
-
+/**
+ * Klasa przechowująca dane o serwisach streamingowych oferujących dany film.
+ *
+ * <p>Dane pobierane są z zewnętrznej bazy danych TMDB za pomocą API.
+ */
 public class MovieWatchProviderData {
+  /** Parametr przechowujący unikalny identyfikator filmu */
   public int id;
+  /** Lista przechowująca dane o serwisach streamingowych w Polsce */
   public ArrayList<WatchProviderData> PL;
+  /** lista przechowująca dane o serwisach streamingowych w Stanach Zjednoczonych */
   public ArrayList<WatchProviderData> US;
 
   @Override

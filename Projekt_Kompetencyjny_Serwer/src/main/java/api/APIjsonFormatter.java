@@ -10,8 +10,16 @@ import exceptions.APIException;
 
 import java.util.ArrayList;
 
+/** Klasa parsująca pliki JSON i tworząca odpowiednie obiekty */
 public class APIjsonFormatter {
 
+  /**
+   * Metoda parsująca plik JSON z danymi o filmach do obiektu PageMovieData
+   *
+   * @param rootObj obiekt źródłowy JSON
+   * @return obiekt PageMovieData ze stroną z informacjami o filmach
+   * @throws APIException.WrongJsonObjectException
+   */
   public PageMovieData parseToObjectPageMovieData(JsonObject rootObj)
       throws APIException.WrongJsonObjectException {
     if (!rootObj.has("results")) {
@@ -33,6 +41,13 @@ public class APIjsonFormatter {
     return pageMovieData;
   }
 
+  /**
+   * Metoda parsująca plik JSON z serwisami streamingowymi do obiektu MovieWatchProviderData
+   *
+   * @param rootObj obiekt źródłowy JSON
+   * @return obiekt MovieWatchProviderData z informacjami o serwisach streamingowych
+   * @throws APIException.WrongJsonObjectException
+   */
   public MovieWatchProviderData parseToObjectMovieWatchProviderData(JsonObject rootObj)
       throws APIException.WrongJsonObjectException {
     if (!rootObj.has("results")) {

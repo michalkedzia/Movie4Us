@@ -10,16 +10,27 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/** Klasa budująca prawidłowy URL z zapytaniem */
 public class APIUrlBuilder {
+  /** Unikalny i indywidualny klucz API dla aplikacji Movie4Us */
   private static final String API_KEY = "f315a3238066ebb41551a49a0984e185";
+  /** Pomocniczy URL do tworzenia poprawnych zapytań */
   private static final String API_URL = "https://api.themoviedb.org/3/";
+  /** Haszmapa przechowująca gatunki filmowe wraz z ich identyfikatorami */
   private HashMap<Integer, String> GENRES_MAP;
 
+  /** URL zwracany po utworzeniu zapytania */
   private String retUrl = "";
+  /** Typ zapytania */
   private CallType callType = null;
 
-  public String createBasicUrl(
-      CallType callType) { // Creates basic API url with api key and search category
+  /**
+   * Metoda tworząca proste zapytanie będące podstawą do budowania innych zapytań.
+   *
+   * @param callType typ zapytania
+   * @return podstawowe zapytanie z odpowiednim typem oraz kluczem API
+   */
+  public String createBasicUrl(CallType callType) {
     switch (callType) {
       case DISCOVER:
         {
@@ -50,6 +61,15 @@ public class APIUrlBuilder {
     return retUrl;
   }
 
+  /**
+   * Metoda dodająca filtr do zapytania
+   *
+   * @param filter typ filtru
+   * @param value wartość filtru
+   * @return zapytanie z dodanym filtrem
+   * @throws APIException.InvalidFilterValueException
+   * @throws APIException.WrongCallTypeException
+   */
   public String addDiscoverFilter(FilterType filter, String value)
       throws APIException.InvalidFilterValueException, APIException.WrongCallTypeException {
     if (callType == null) {
@@ -109,7 +129,13 @@ public class APIUrlBuilder {
     return retUrl;
   }
 
-  // Method that checks if provided value is valid for provided filtertype
+  /**
+   * Metoda sprawdzająca czy podana wartość filtru odpowiada podanemu typowi filtru
+   *
+   * @param filter typ filtru
+   * @param value wartość filtru
+   * @throws APIException.InvalidFilterValueException
+   */
   private void validateFilter(FilterType filter, String value)
       throws APIException.InvalidFilterValueException {
     switch (filter) {
@@ -184,6 +210,13 @@ public class APIUrlBuilder {
     }
   }
 
+  /**
+   * Metoda dodająca identyfikator filmu do zapytania o serwisy streamingowe
+   *
+   * @param ID identyfikator filmu
+   * @return zapytanie z dodanym identyfikatorem
+   * @throws APIException.WrongMovieIdException
+   */
   public String addProviderMovieId(int ID) throws APIException.WrongMovieIdException {
     if (ID < 0) {
       throw new APIException.WrongMovieIdException(

@@ -11,11 +11,21 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.HashMap;
 
+/** Klasa tworząca hashmapę gatunków filmowych dostępnych w serwisie TMDB */
 public class GenresHashMap {
+  /** Pomocniczy URL do zapytania generującego gatunki filmowe wraz z ich identyfikatorami */
   private static final String GENRES_URL =
       "https://api.themoviedb.org/3/genre/movie/list?api_key=f315a3238066ebb41551a49a0984e185&language=en-US";
+  /** Haszmapa przechowująca gatunki filmowe wraz z ich identyfikatorami */
   private HashMap<Integer, String> GENRES_MAP;
 
+  /**
+   * Metoda generująca zapytanie i tworząca haszmapę przechowującą gatunki filmowe wraz z ich
+   * identyfikatorami
+   *
+   * @return haszmapa przechowująca gatunki filmowe wraz z ich identyfikatorami
+   * @throws IOException
+   */
   public HashMap<Integer, String> getGenresMap() throws IOException {
     if (GENRES_MAP != null) {
       return GENRES_MAP;
