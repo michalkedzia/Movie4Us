@@ -6,8 +6,6 @@ import java.util.List;
 
 /**
  * Message to klasa-model, za pomocą któtej klient wymiania dane z serwerem.
- *
- * @author MK
  */
 public class Message {
   /** Nazwa użytkownika. */

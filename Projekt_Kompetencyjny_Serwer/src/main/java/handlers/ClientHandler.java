@@ -14,8 +14,6 @@ import java.util.concurrent.BlockingQueue;
 /**
  * Klasa przechowująca informację klienta i obsługująca połączenie z klientem. Odbiera żądania
  * wysłania przez klienta, następnie umieszcza je w messageQueue.
- *
- * @author MK
  */
 public class ClientHandler implements Runnable {
   /** Socket przydzielony przez główna klasę serwera. */

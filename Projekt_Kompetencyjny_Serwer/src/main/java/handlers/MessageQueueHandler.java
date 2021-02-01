@@ -16,8 +16,6 @@ import java.util.stream.Collectors;
 
 /**
  * Główna klasa serwera obługująca wszystkie żądania klientów.
- *
- * @author MK
  */
 public class MessageQueueHandler implements Runnable {
   /** Mapa użytkowników przechowująca nazwę użytkownika oraz klase obsługującą danego klienta. */

@@ -14,8 +14,6 @@ import java.util.concurrent.*;
 
 /**
  * Klasa serwera rozpoczynająca pracę serwera
- *
- * @author MK
  */
 public class MainServer {
   public static void main(String[] args) throws IOException {

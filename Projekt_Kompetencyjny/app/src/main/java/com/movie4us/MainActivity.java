@@ -36,7 +36,6 @@ import java.util.List;
  * Jeśli użytkownik nie istnieję lub nie jest zalogowany, zostanie wyświetlony odpowienik komunikat.
  * Użytkownik ma również możliwość wyboru użytkownika z którym chce się połączyć z listy aktualnie zalogowanych klientów
  * z którymi kiedyś się już łączył.
- * @author MK
  */
  public class MainActivity extends AppCompatActivity {
 
