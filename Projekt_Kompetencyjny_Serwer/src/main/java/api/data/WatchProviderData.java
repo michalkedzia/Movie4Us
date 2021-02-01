@@ -1,8 +1,17 @@
 package api.data;
 
+/**
+ * Klasa przechowująca dane o serwisie streamingowym
+ *
+ * <p>Dane pobierane są z zewnętrznej bazy danych TMDB za pomocą API.
+ */
 public class WatchProviderData {
+
+  /** Identyfikator serwisu streamingowego */
   public int provider_id;
+  /** Nazwa serwisu streamingowego */
   public String provider_name;
+  /** Ścieżka do logo serwisu streamingowego */
   private String logo_path;
 
   public String getLogo_path() {

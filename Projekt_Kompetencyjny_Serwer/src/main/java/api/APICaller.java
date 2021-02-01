@@ -13,11 +13,25 @@ import java.net.URL;
 import java.net.URLConnection;
 
 import static api.utils.CallType.*;
-
+/**
+ * Klasa odpytująca serwis TMDB za pomocą API.
+ *
+ * <p>Klasa wysyła zapytanie do serwisu TMDB i zwraca obiekt JSON.
+ */
 public class APICaller {
+  /** Url z zapytaniem */
   private String callUrl;
+
+  /** Typ zapytania */
   private CallType callType;
 
+  /**
+   * Konstruktor sprawdza czy callType jest prawidłowy i tworzy obiekt APICaller
+   *
+   * @param callUrl url z zapytaniem
+   * @param callType rodzaj zapytania
+   * @throws APIException.WrongCallTypeException
+   */
   public APICaller(String callUrl, CallType callType) throws APIException.WrongCallTypeException {
     if (callType == DISCOVER) {
       if (!callUrl.contains("discover")) {
@@ -37,6 +51,11 @@ public class APICaller {
     this.callType = callType;
   }
 
+  /**
+   * Metoda wysyłająca zapytanie do serwisu TMDB.
+   *
+   * @return zwraca obiekt JSON
+   */
   public JsonObject sendAPIrequest() {
     JsonObject rootObj = null;
     try {
@@ -52,55 +71,6 @@ public class APICaller {
     }
 
     return rootObj;
-  }
-
-  // ----------------------Example use of the url builder, API caller and JSON formatter
-  // ----------------------------
-
-  public static void main(String[] args) {
-    APIUrlBuilder apiUrlBuilder = new APIUrlBuilder();
-    //            String stringUrl = apiUrlBuilder.createBasicUrl(DISCOVER);
-    //            try {
-    //              apiUrlBuilder.addDiscoverFilter(FilterType.LANGUAGE, "english");
-    //              apiUrlBuilder.addDiscoverFilter(FilterType.SORT, "popularity.desc");
-    //              apiUrlBuilder.addDiscoverFilter(FilterType.PAGE, "1");
-    //              stringUrl = apiUrlBuilder.addDiscoverFilter(FilterType.GENRE, "Drama");
-    //              System.out.println(stringUrl);
-    //              stringUrl = apiUrlBuilder.addDiscoverFilter(FilterType.GENRE, "Action");
-    //              System.out.println(stringUrl);
-    //    //          stringUrl = apiUrlBuilder.addDiscoverFilter(FilterType.YEAR, "2019");
-    //              System.out.println(stringUrl);
-    //            } catch (APIException.WrongCallTypeException |
-    //     APIException.InvalidFilterValueException e)
-    //       {
-    //              e.printStackTrace();
-    //            }
-
-    String stringUrl = apiUrlBuilder.createBasicUrl(PROVIDERS);
-    try {
-      stringUrl = apiUrlBuilder.addProviderMovieId(475557);
-    } catch (APIException.WrongMovieIdException e) {
-      e.printStackTrace();
-    }
-    // System.out.println(stringUrl);
-
-    APICaller apiCaller = null;
-    try {
-      apiCaller = new APICaller(stringUrl, PROVIDERS);
-    } catch (APIException.WrongCallTypeException e) {
-      e.printStackTrace();
-    }
-
-    assert apiCaller != null;
-    JsonObject obj = apiCaller.sendAPIrequest();
-
-    APIjsonFormatter formatter = new APIjsonFormatter();
-    try {
-      MovieWatchProviderData movie = formatter.parseToObjectMovieWatchProviderData(obj);
-      System.out.println(movie.toString());
-    } catch (APIException.WrongJsonObjectException e) {
-      e.printStackTrace();
-    }
   }
 
   public String getCallUrl() {

@@ -1,15 +1,28 @@
 package api.data;
-
+/**
+ * Klasa przechowująca dane o filmie.
+ *
+ * <p>Dane pobierane są z zewnętrznej bazy danych TMDB za pomocą API.
+ */
 public class MovieData {
-  public double popularity;
-  public int vote_count;
-  public String poster_path;
-  public int id;
-  public String title;
-  public float vote_average;
-  public String overview;
-  public String release_date;
 
+  /** popularity parametr przechowujący popularność filmu */
+  public double popularity;
+  /** vote_count parametr przechowujący ilość ocen użytkowników */
+  public int vote_count;
+  /** parametr przechowujący link do plakatu */
+  public String poster_path;
+  /** parametr przechowujący unikalny identyfikator filmu */
+  public int id;
+  /** parametr przechowujący tytuł filmu */
+  public String title;
+  /** parametr przechowujący średnią ocenę filmu */
+  public float vote_average;
+  /** parametr przechowujący opis filmu */
+  public String overview;
+  /** parametr przechowujący datę premiery filmu */
+  public String release_date;
+  /** obiekt przechowujący dane o serwisach streamingowych które mają w swojej ofercie dany film */
   public MovieWatchProviderData watchProviderData;
 
   @Override
