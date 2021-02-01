@@ -48,6 +48,17 @@ public class MovieWatchProviderData {
         if(setProvider == null) return providers;
 
         for(int i=0; i<setProvider.size(); i++){
+            providers.add(setProvider.get(i).getProvider_name());
+        }
+        return providers;
+    }
+
+    public ArrayList<String> getPLProviderLogo(){
+        ArrayList<String> providers = new ArrayList<>();
+        ArrayList<WatchProviderData> setProvider = US;
+        if(setProvider == null) return providers;
+
+        for(int i=0; i<setProvider.size(); i++){
             providers.add(setProvider.get(i).getLogo_path());
         }
         return providers;

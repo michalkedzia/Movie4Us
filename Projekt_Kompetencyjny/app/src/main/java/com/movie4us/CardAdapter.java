@@ -12,10 +12,20 @@ import data.MovieData;
 
 import java.util.ArrayList;
 
+/**
+ * Klasa CardAdapter odpowiada za stworzenie kart do wyświetlania informacji o filmie (w postaci
+ * interfejsu graficznego dla użytkownika - plików xml'a), które będzie można wyświetlić w postaci
+ * stosu.
+ */
 public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
-
+  /** Lista filmów */
   private ArrayList<MovieData> items;
 
+  /**
+   * Konstruktor CardAdapter'a
+   *
+   * @param items lista filmów
+   */
   public CardAdapter(ArrayList<MovieData> items) {
     this.items = items;
   }
@@ -28,6 +38,15 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     this.items = items;
   }
 
+  /**
+   * Metoda ViewHolder tworzy/przygotowywuje nowy widok w postaci stosu kart, w zależności od ilości
+   * filmów w liście pobranej z bazy danych.
+   *
+   * @param parent
+   * @param viewType
+   * @return Zwraca widok do wyświetlenia przez activity dla użytkownika o filmach na załadowanych
+   *     karatch całego adapetra.
+   */
   @NonNull
   @Override
   public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -54,6 +73,15 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     return Rating;
   }
 
+  /**
+   * Metoda onBindViewHolder jest wywoływana przez RecyclerView w celu wyświetlenia danych na
+   * określonej pozycji.
+   *
+   * @param holder Uchwyt dla klasy ViewHolder dla której będzie ustawiany widok pojedyńczej karty
+   *     filmu.
+   * @param position Pozycja w liście elementów - w tym przypadku w liście filmów do ustawienia na
+   *     kartach adaptera.
+   */
   @Override
   public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
     holder.setData(items.get(position));
@@ -64,6 +92,17 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     return items.size();
   }
 
+  /**
+   * Klasa ViewHolder posiada pola odpowiadające obiektom zaprojektowanym dla interfejsu graficznego
+   * w postaci xml'a.
+   *
+   * <p>Konstruktor ViewHoldera przypisuje pod pole obrazu, oraz pola tekstowe odpowiednio: tytył
+   * filmu, krótki opis i ogólną ocenę, odpowiadające im widoki na scenie xml'a. Aby każda
+   * informacja była wyświetlona w odpowiednim miejscu.
+   *
+   * <p>Metoda setData jest wykorzystywana do ustawienia widoku karty, tak aby wyświetlić porządany
+   * obraz/plakat filmu, jego tytuł, opis i ocenę.
+   */
   class ViewHolder extends RecyclerView.ViewHolder {
     ImageView image;
     TextView title, description, film_rating;
