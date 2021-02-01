@@ -23,7 +23,7 @@
                 android:id="@+id/textmatched"
                 android:layout_width="190dp"
                 android:layout_height="40dp"
-                android:fontFamily="@font/roboto"
+                android:fontFamily="@font/poppinsbold"
                 android:gravity="center"
                 android:text="MATCHED FILM"
                 android:textStyle="bold"
@@ -58,18 +58,6 @@
                 android:scaleType="fitCenter"
                 app:layout_constraintHorizontal_bias="0.503"/>
 
-        <!--        <ImageView-->
-        <!--                android:id="@+id/filmImage"-->
-        <!--                android:layout_width="360dp"-->
-        <!--                android:layout_height="400dp"-->
-        <!--                android:scaleType="fitCenter"-->
-        <!--                app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--                app:layout_constraintStart_toStartOf="parent"-->
-        <!--                app:layout_constraintEnd_toEndOf="parent"-->
-        <!--                app:layout_constraintHorizontal_bias="0.509"-->
-        <!--                android:layout_marginTop="50dp"-->
-        <!--                android:layout_marginBottom="40dp"/>-->
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
@@ -100,26 +88,19 @@
                 android:textSize="17sp"
                 android:fontFamily="@font/roboto"/>
 
-        <!--        <ImageView-->
-        <!--                android:layout_width="70dp"-->
-        <!--                android:layout_height="70dp"-->
-        <!--                android:id="@+id/ProviderImage"-->
-        <!--                android:layout_marginLeft="25px"-->
-        <!--                android:scaleType="centerCrop"/>-->
 
         <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/horizontalScrollView"
-                android:layout_above="@+id/linearLayout3"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_marginLeft="25px"
                 android:layout_marginRight="25px">
 
             <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="80dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:id="@+id/imageContainer"
                     android:orientation="horizontal">
             </LinearLayout>
