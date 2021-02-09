@@ -65,7 +65,7 @@ public class Match extends AppCompatActivity {
     System.out.println("numbers of providers: " + numberOfProviders);
 
     if (numberOfProviders == 0) {
-      linkStatus.setText("Brak w PL");
+      linkStatus.setText("No availability");
     } else {
       for (int i = 0; i < numberOfProviders; i++) {
         View view = inflater.inflate(R.layout.provider_item, layout, false);

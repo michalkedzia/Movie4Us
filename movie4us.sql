@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Czas generowania: 11 Lis 2020, 17:53
+-- Czas generowania: 09 Lut 2021, 22:47
 -- Wersja serwera: 10.4.14-MariaDB
 -- Wersja PHP: 7.4.11
 
@@ -20,6 +20,28 @@ SET time_zone = "+00:00";
 --
 -- Baza danych: `movie4us`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `friends`
+--
+
+CREATE TABLE `friends` (
+  `id` int(11) NOT NULL,
+  `username` varchar(50) NOT NULL,
+  `friendID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Zrzut danych tabeli `friends`
+--
+
+INSERT INTO `friends` (`id`, `username`, `friendID`) VALUES
+(17, 'test1', 2),
+(18, 'test', 2),
+(19, 'test1', 3),
+(20, 'test', 3);
 
 -- --------------------------------------------------------
 
@@ -42,11 +64,20 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`userid`, `fullname`, `username`, `password`, `email`) VALUES
 (2, 'test', 'test', '$2y$10$Pse5GW2smLlSAAMRRyLpzeH2YLEIhNnr.G13BHO0lAN9F59YxI1kq', 'test'),
 (3, 'test1', 'test1', '$2y$10$ph/LcE/8MYrUkZAw7Kp/0eym3vohOAC0eej8KM9KZC35.X7gtn8ou', 'test1'),
-(4, 'test2', 'test3', '$2y$10$D.a4eDPmnqurcH7ZonNuxumEHiLVAqIEVwHhKEXoqO0jdulMWe/4O', 'test3');
+(4, 'test2', 'test3', '$2y$10$D.a4eDPmnqurcH7ZonNuxumEHiLVAqIEVwHhKEXoqO0jdulMWe/4O', 'test3'),
+(14, 'jkowalski', 'jkowalski', '$2y$10$iqbpRAijul9x7af6HJKNWOJLI7pnlOBAnkBOoNGyi1phySTs3vmZ.', 'jkowalski@pl.pl'),
+(36, 'jkowalskii', 'jkowalskii', '$2y$10$3Hxj6sgZFeRRi3rZXuBygOpcd74qeDhAfBQFiAII67z0Rkxopi9Pu', 'jkowalskii@pl.pl'),
+(48, 'test4', 'test4', '$2y$10$rM/IQcAwpcMrKX8YU0PosOF1zdLkebxUuMl9e3jzKPxbw50/rExvK', 'test4@gmail.com');
 
 --
 -- Indeksy dla zrzutów tabel
 --
+
+--
+-- Indeksy dla tabeli `friends`
+--
+ALTER TABLE `friends`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indeksy dla tabeli `users`
@@ -61,10 +92,16 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT dla tabeli `friends`
+--
+ALTER TABLE `friends`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+
+--
 -- AUTO_INCREMENT dla tabeli `users`
 --
 ALTER TABLE `users`
-  MODIFY `userid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `userid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

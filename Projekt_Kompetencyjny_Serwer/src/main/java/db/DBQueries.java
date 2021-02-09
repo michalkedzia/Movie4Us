@@ -38,6 +38,7 @@ public class DBQueries {
     } catch (SQLException exception) {
       exception.printStackTrace();
     }
+    list.remove(userName);
     return list;
   }
 
